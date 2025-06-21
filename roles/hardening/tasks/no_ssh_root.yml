@@ -1,0 +1,7 @@
+- name: Deshabilitar acceso SSH como root
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin'
+    line: 'PermitRootLogin no'
+    state: present
+  notify: Reiniciar servidor ssh

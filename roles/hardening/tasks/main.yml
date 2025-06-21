@@ -7,3 +7,6 @@
 - name: Instalar herramientas de seguridad y auditoría
   import_tasks: packages.yml
 
+- name: Configurar SSH para deshabilitar login root
+  import_tasks: no_ssh_root.yml
+
