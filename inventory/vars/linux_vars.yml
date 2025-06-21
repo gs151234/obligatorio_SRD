@@ -1,2 +1,1 @@
 sysadmin_ssh_key_path: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519.pub"
-ansible_user_key_path: "{{ lookup('env', 'HOME') }}/.ssh/ansible.pub"
