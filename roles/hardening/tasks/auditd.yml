@@ -1,0 +1,25 @@
+- name: Asegurar que auditd esté habilitado y corriendo
+  ansible.builtin.systemd:
+    name: auditd
+    state: started
+    enabled: true
+
+- name: Copiar reglas auditd desde plantillas
+  ansible.builtin.template:
+    src: "auditd_rules/{{ item }}.j2"
+    dest: "/etc/audit/rules.d/{{ item }}"
+    owner: root
+    group: root
+    mode: '0640'
+  loop:
+    - access.rules
+    - actions.rules
+    - delete.rules
+    - logins.rules
+    - MAC-policy.rules
+    - modules.rules
+    - mounts.rules
+    - perm_mod.rules
+    - session.rules
+    - system_locale.rules
+  notify: Aplicar reglas auditd

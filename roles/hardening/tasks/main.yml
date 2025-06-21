@@ -15,3 +15,6 @@
 
 - name: Deshabilitar módulos de FyleSystem innecesarios
   import_tasks: filesystem_modules.yml
+
+- name: Aplicar reglas auditd
+  import_tasks: auditd.yml
