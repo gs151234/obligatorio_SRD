@@ -1,0 +1,27 @@
+- name: Copiar clave pública de sysadmin
+  ansible.posix.authorized_key:
+    user: sysadmin
+    state: present
+    key: "{{ lookup('file', sysadmin_ssh_key_path) }}"
+
+- name: Crear usuario ansible sin password
+  ansible.builtin.user:
+    name: ansible
+    shell: /bin/bash
+    password: '!'  # Deshabilita login por password
+    create_home: yes
+    state: present
+
+- name: Conceder sudo sin password al usuario ansible
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/ansible
+    content: 'ansible ALL=(ALL) NOPASSWD: ALL'
+    owner: root
+    group: root
+    mode: '0440'
+
+- name: Copiar clave pública al usuario ansible
+  ansible.posix.authorized_key:
+    user: ansible
+    state: present
+    key: "{{ lookup('file', ansible_user_key_path) }}"

@@ -1,0 +1,9 @@
+- name: Actualizar cache de paquetes APT
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Actualizar todos los paquetes instalados
+  ansible.builtin.apt:
+    upgrade: dist
+    autoremove: yes

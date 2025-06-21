@@ -1,0 +1,10 @@
+---
+- name: Configuración inicial (bootstrap)
+  hosts: linux
+  become: true
+  vars_files:
+    - ../inventory/vars/linux_vars.yml
+
+  roles:
+    - role: hardening
+      tasks_from: access.yml

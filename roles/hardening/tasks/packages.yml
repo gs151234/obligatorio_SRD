@@ -1,0 +1,24 @@
+- name: Preconfigurar iptables-persistent para instalación sin intervención
+  debconf:
+    name: iptables-persistent
+    question: "{{ item.question }}"
+    value: "{{ item.value }}"
+    vtype: boolean
+  loop:
+    - { question: "iptables-persistent/autosave_v4", value: "true" }
+    - { question: "iptables-persistent/autosave_v6", value: "false" }
+
+- name: Instalar paquetes requeridos por el hardening CIS
+  ansible.builtin.apt:
+    name:
+      - qrencode
+      - libpam-pwquality
+      - iptables
+      - iptables-persistent
+      - auditd
+      - audispd-plugins
+      - libpam-google-authenticator
+      - oathtool
+      - kmod
+      - libpam-modules-bin
+    state: present

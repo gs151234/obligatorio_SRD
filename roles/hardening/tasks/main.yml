@@ -1,0 +1,9 @@
+- name: Configuración de acceso
+  import_tasks: access.yml
+
+- name: Aplicar actualizaciones del sistema
+  import_tasks: updates_upgrades.yml
+
+- name: Instalar herramientas de seguridad y auditoría
+  import_tasks: packages.yml
+

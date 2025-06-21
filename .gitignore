@@ -1,0 +1,18 @@
+# Ignorar claves privadas SSH
+**/ssh_keys/id_ed25519
+**/ssh_keys/id_ed25519.*
+!**/ssh_keys/id_ed25519.pub
+
+**/ssh_keys/id_rsa
+**/ssh_keys/id_rsa.*
+!**/ssh_keys/id_rsa.pub
+
+**/ssh_keys/ansible
+**/ssh_keys/ansible.*
+!**/ssh_keys/ansible.pub
+
+# Ignorar archivos temporales de Ansible o editores
+*.retry
+*.swp
+*.swo
+*.bak

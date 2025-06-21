@@ -1,0 +1,9 @@
+---
+- name: Aplicar hardening completo
+  hosts: linux
+  become: true
+  vars_files:
+    - ../inventory/vars/linux_vars.yml
+
+  roles:
+    - hardening
