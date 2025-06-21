@@ -1,6 +1,9 @@
 - name: Configuración de acceso
   import_tasks: access.yml
 
+- name: Configurar sincronización horaria
+  import_tasks: time_sync.yml
+
 - name: Aplicar actualizaciones del sistema
   import_tasks: updates_upgrades.yml
 
@@ -10,3 +13,5 @@
 - name: Configurar SSH para deshabilitar login root
   import_tasks: no_ssh_root.yml
 
+- name: Deshabilitar módulos de FyleSystem innecesarios
+  import_tasks: filesystem_modules.yml

@@ -1,0 +1,33 @@
+- name: Deshabilitar carga de módulos de sistemas de archivos innecesarios
+  ansible.builtin.copy:
+    dest: "/etc/modprobe.d/{{ item }}.conf"
+    content: "install {{ item }} /bin/true\n"
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - cramfs
+    - freevxfs
+    - jffs2
+    - hfs
+    - hfsplus
+    - squashfs
+    - udf
+
+- name: Remover módulos del kernel si están cargados
+  ansible.builtin.shell: |
+    if lsmod | grep -q "^{{ item }}"; then
+      rmmod {{ item }} || echo "No se pudo remover {{ item }} o no está cargado."
+    fi
+  args:
+    executable: /bin/bash
+  register: rmmod_results
+  changed_when: false
+  loop:
+    - cramfs
+    - freevxfs
+    - jffs2
+    - hfs
+    - hfsplus
+    - squashfs
+    - udf

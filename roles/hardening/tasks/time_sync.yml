@@ -1,0 +1,10 @@
+- name: Establecer zona horaria a America/Montevideo
+  ansible.builtin.command:
+    cmd: timedatectl set-timezone America/Montevideo
+  changed_when: false
+
+- name: Reiniciar servicio systemd-timesyncd
+  ansible.builtin.systemd:
+    name: systemd-timesyncd
+    state: restarted
+    enabled: true
