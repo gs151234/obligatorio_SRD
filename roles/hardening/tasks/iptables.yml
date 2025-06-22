@@ -1,0 +1,37 @@
+- name: Eliminar nftables si está presente
+  ansible.builtin.apt:
+    name: nftables
+    state: absent
+
+- name: Limpiar reglas iptables existentes y establecer políticas en ACCEPT temporalmente
+  ansible.builtin.shell: |
+    iptables -P INPUT ACCEPT
+    iptables -P FORWARD ACCEPT
+    iptables -P OUTPUT ACCEPT
+    iptables -F
+    iptables -X
+    iptables -t nat -F
+    iptables -t nat -X
+    iptables -t mangle -F
+    iptables -t mangle -X
+  become: true
+  args:
+    executable: /bin/bash
+
+- name: Aplicar reglas de iptables desde plantilla
+  ansible.builtin.template:
+    src: iptables.rules.j2
+    dest: /etc/iptables/rules.v4
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Restaurar reglas iptables desde archivo
+  ansible.builtin.shell: iptables-restore < /etc/iptables/rules.v4
+  become: true
+  args:
+    executable: /bin/bash
+
+- name: Guardar reglas iptables persistentes
+  ansible.builtin.command: netfilter-persistent save
+  become: true

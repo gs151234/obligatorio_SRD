@@ -18,3 +18,6 @@
 
 - name: Aplicar reglas auditd
   import_tasks: auditd.yml
+
+- name: Aplicar reglas iptables
+  import_tasks: iptables.yml

@@ -5,3 +5,6 @@
 
 - name: Aplicar reglas auditd
   ansible.builtin.shell: augenrules --load && systemctl restart auditd
+
+- name: Aplicar reglas iptables
+  ansible.builtin.shell: iptables-restore < /etc/iptables/rules.v4 && netfilter-persistent save

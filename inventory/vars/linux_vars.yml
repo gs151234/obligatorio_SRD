@@ -1,1 +1,5 @@
 sysadmin_ssh_key_path: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519.pub"
+
+wazuh_ip: "192.168.56.20"
+
+bastion_ip: "192.168.56.26"
