@@ -1,23 +1,18 @@
 *filter
 
+# Puerto personalizado 61189
+-A INPUT -p tcp --dport 61189 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp --sport 61189 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
 # Conexiones establecidas
 -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 -A INPUT -m conntrack --ctstate INVALID -j DROP
 
-# Puerto personalizado 61189
--A INPUT -p tcp --dport 61189 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
--A OUTPUT -p tcp --sport 61189 -m conntrack --ctstate ESTABLISHED -j ACCEPT
-
 #  Permitir loopback
 -A INPUT -i lo -j ACCEPT
 -A OUTPUT -o lo -j ACCEPT
 -A INPUT -s 127.0.0.0/8 ! -i lo -j DROP
-
-# Conexiones establecidas
-#-A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-#-A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-#-A INPUT -m conntrack --ctstate INVALID -j DROP
 
 # DNS
 -A OUTPUT -p udp --dport 53 -j ACCEPT
