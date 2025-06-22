@@ -31,6 +31,11 @@
   become: true
   args:
     executable: /bin/bash
+  register: result
+  retries: 3
+  delay: 5
+  until: result.rc == 0
+
 
 - name: Guardar reglas iptables persistentes
   ansible.builtin.command: netfilter-persistent save

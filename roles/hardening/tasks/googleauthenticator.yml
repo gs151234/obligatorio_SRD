@@ -17,20 +17,22 @@
         - { regexp: '^UsePAM', line: 'UsePAM yes' }
         - { regexp: '^KbdInteractiveAuthentication', line: 'KbdInteractiveAuthentication yes' }
         - { regexp: '^PermitEmptyPasswords', line: 'PermitEmptyPasswords no' }
+        - { regexp: '^AuthenticationMethods', line: 'AuthenticationMethods publickey keyboard-interactive' }
       notify: Reiniciar servidor ssh
 
-- name: Crear grupo de exclusión MFA 'whitelist_nomfa'
+- name: Asegurar grupo whitelist_nomfa
   ansible.builtin.group:
     name: whitelist_nomfa
     state: present
 
-- name: Agregar usuario ansible al grupo whitelist_nomfa
+- name: Agregar usuarios a whitelist_nomfa
   ansible.builtin.user:
-    name: ansible # Asegúrate de que este sea el usuario con el que te conectas
+    name: "{{ item }}"
     groups: whitelist_nomfa
     append: yes
+  loop: "{{ whitelist_users }}"
 
-- name: Configurar PAM para SSH con MFA
+- name: Configurar PAM para SSH con MFA y whitelist
   block:
     - name: Backup de /etc/pam.d/sshd
       ansible.builtin.copy:
@@ -38,7 +40,7 @@
         dest: "/etc/pam.d/sshd.bak.{{ ansible_date_time.iso8601 | regex_replace(':', '') }}"
         remote_src: yes
 
-    - name: Aplicar configuración PAM completa con plantilla Jinja
+    - name: Aplicar plantilla PAM con soporte MFA
       ansible.builtin.template:
         src: sshd.pam.j2
         dest: /etc/pam.d/sshd
@@ -46,8 +48,4 @@
         group: root
         mode: '0644'
         backup: yes
-      notify: Reiniciar servidor ssh
-
-
-
-
+  notify: Reiniciar servidor ssh

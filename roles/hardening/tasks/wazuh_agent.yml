@@ -1,0 +1,32 @@
+- name: Descargar paquete del agente de Wazuh
+  ansible.builtin.get_url:
+    url: https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.12.0-1_amd64.deb
+    dest: /tmp/wazuh-agent_4.12.0-1_amd64.deb
+    mode: '0644'
+
+- name: Instalar paquete del agente Wazuh
+  ansible.builtin.command: >
+    dpkg -i /tmp/wazuh-agent_4.12.0-1_amd64.deb
+  become: true
+  environment:
+    WAZUH_MANAGER: "192.168.56.20"
+
+- name: Recargar systemd para reconocer nuevo servicio
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  become: true
+
+- name: Habilitar agente de Wazuh en el arranque
+  ansible.builtin.systemd:
+    name: wazuh-agent
+    enabled: true
+  become: true
+
+- name: Iniciar el agente de Wazuh
+  ansible.builtin.systemd:
+    name: wazuh-agent
+    state: started
+  become: true
+
+
+

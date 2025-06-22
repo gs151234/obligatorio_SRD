@@ -27,6 +27,12 @@
         group: root
         mode: '0440'
 
+    - name: Agregar clave pública al usuario sysadmin
+      ansible.posix.authorized_key:
+        user: sysadmin
+        state: present
+        key: "{{ lookup('file', sysadmin_ssh_key_path) }}"
+
     - name: Backup de sshd_config
       ansible.builtin.copy:
         src: /etc/ssh/sshd_config

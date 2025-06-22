@@ -24,3 +24,7 @@
 
 - name: Aplicar configuración de MFA
   import_tasks: googleauthenticator.yml
+
+- name: Instalación de Wazuh Agent
+  import_tasks: wazuh_agent.yml
+

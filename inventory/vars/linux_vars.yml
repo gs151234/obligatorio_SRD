@@ -1,5 +1,18 @@
+
+# Claves publicas
+
 ansible_ssh_key_path: "{{ lookup('env', 'HOME') }}/.ssh/ansible.pub"
+
+sysadmin_ssh_key_path: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519.pub"
+
+# Servidores
 
 wazuh_ip: "192.168.56.20"
 
 bastion_ip: "192.168.56.26"
+
+# Usuarios con claves publica privadas, sin OTP 
+
+whitelist_users:
+  - ansible
+  - sysadmin
