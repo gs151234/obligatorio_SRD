@@ -28,3 +28,5 @@
 - name: Instalación de Wazuh Agent
   import_tasks: wazuh_agent.yml
 
+- name: Instalación Velociraptor
+  import_tasks: velociraptor.yml

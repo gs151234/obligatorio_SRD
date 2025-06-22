@@ -1,18 +1,20 @@
 
 # Claves publicas
-
 ansible_ssh_key_path: "{{ lookup('env', 'HOME') }}/.ssh/ansible.pub"
-
 sysadmin_ssh_key_path: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519.pub"
 
 # Servidores
-
 wazuh_ip: "192.168.56.20"
-
 bastion_ip: "192.168.56.26"
+velociraptor_ip: "192.168.56.26"
 
 # Usuarios con claves publica privadas, sin OTP 
-
 whitelist_users:
   - ansible
   - sysadmin
+
+# Variables Velociraptor
+velociraptor_config_src: "/home/sysadmin/velociraptor_setup/client.config.yaml"
+velociraptor_config_dest: "/home/ansible/client.config.yaml"
+velociraptor_setup_dir: "/home/ansible/velociraptor_setup"
+velociraptor_url: "https://github.com/Velocidex/velociraptor/releases/download/v0.74/velociraptor-v0.74.1-linux-amd64"

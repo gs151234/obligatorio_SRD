@@ -8,9 +8,14 @@
     - { question: "iptables-persistent/autosave_v4", value: "true" }
     - { question: "iptables-persistent/autosave_v6", value: "false" }
 
-- name: Instalar paquetes requeridos por el hardening CIS
+- name: Instalar paquetes requeridos
   ansible.builtin.apt:
     name:
+      - curl
+      - wget
+      - unzip
+      - gnupg
+      - jq
       - qrencode
       - libpam-pwquality
       - iptables
@@ -22,3 +27,22 @@
       - kmod
       - libpam-modules-bin
     state: present
+    update_cache: yes
+  register: resultado_apt
+
+- name: Mostrar resumen de instalación
+  ansible.builtin.debug:
+    msg: >
+      {% if resultado_apt.changed %}
+      ✅ Se instalaron o actualizaron paquetes.
+      {% else %}
+      ✅ Todos los paquetes ya estaban instalados.
+      {% endif %}
+
+- name: Mostrar paquetes requeridos
+  ansible.builtin.debug:
+    msg: |
+      📦 Paquetes requeridos:
+      {% for pkg in (resultado_apt['invocation']['module_args']['name'] if 'invocation' in resultado_apt and 'module_args' in resultado_apt['invocation'] else []) %}
+        - {{ pkg }}
+      {% endfor %}

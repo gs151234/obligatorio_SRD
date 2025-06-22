@@ -1,0 +1,40 @@
+- name: Copiar archivo de configuración de Velociraptor
+  ansible.builtin.copy:
+    src: "{{ velociraptor_config_src }}"
+    dest: "{{ velociraptor_config_dest }}"
+    owner: ansible
+    group: ansible
+    mode: '0644'
+
+- name: Crear directorio de instalación
+  ansible.builtin.file:
+    path: "{{ velociraptor_setup_dir }}"
+    state: directory
+    owner: ansible
+    group: ansible
+    mode: '0755'
+
+- name: Descargar Velociraptor binario
+  ansible.builtin.get_url:
+    url: "{{ velociraptor_url }}"
+    dest: "{{ velociraptor_setup_dir }}/velociraptor"
+    mode: '0755'
+    owner: ansible
+    group: ansible
+
+- name: Generar paquete .deb del cliente
+  ansible.builtin.command:
+    cmd: "./velociraptor debian client --config {{ velociraptor_config_dest }} --output velociraptor-client.deb"
+    chdir: "{{ velociraptor_setup_dir }}"
+  become_user: ansible
+
+- name: Instalar paquete .deb generado
+  ansible.builtin.apt:
+    deb: "{{ velociraptor_setup_dir }}/velociraptor-client.deb"
+    state: present
+
+- name: Verificar estado del servicio Velociraptor
+  ansible.builtin.systemd:
+    name: velociraptor_client
+    enabled: yes
+    state: started

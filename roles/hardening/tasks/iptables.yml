@@ -45,6 +45,11 @@
     - iptables -A INPUT  -p tcp -s {{ wazuh_ip }} --sport 1514 -m conntrack --ctstate ESTABLISHED -j ACCEPT
     - iptables -A INPUT  -p udp -s {{ wazuh_ip }} --sport 1514 -m conntrack --ctstate ESTABLISHED -j ACCEPT
     - iptables -A INPUT  -p tcp -s {{ wazuh_ip }} --sport 1515 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+    - iptables -A OUTPUT -p tcp -d {{ velociraptor_ip }} --dport 8000 -j ACCEPT
+    - iptables -A INPUT  -p tcp -s {{ velociraptor_ip }} --sport 8000 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+    - iptables -A OUTPUT -p tcp -d {{ velociraptor_ip }} --dport 8889 -j ACCEPT
+    - iptables -A INPUT  -p tcp -s {{ velociraptor_ip }} --sport 8889 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
   become: true
 
 - name: Guardar reglas iptables persistentes
