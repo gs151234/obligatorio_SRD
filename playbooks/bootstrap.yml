@@ -19,6 +19,14 @@
         state: present
         key: "{{ lookup('file', ansible_ssh_key_path) }}"
 
+    - name: Permitir sudo sin contraseña para ansible
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/ansible
+        content: "ansible ALL=(ALL) NOPASSWD:ALL\n"
+        owner: root
+        group: root
+        mode: '0440'
+
     - name: Backup de sshd_config
       ansible.builtin.copy:
         src: /etc/ssh/sshd_config
