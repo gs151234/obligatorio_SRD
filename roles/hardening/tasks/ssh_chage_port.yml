@@ -1,0 +1,17 @@
+- name: Backup de sshd_config
+  ansible.builtin.copy:
+    src: /etc/ssh/sshd_config
+    dest: "/etc/ssh/sshd_config.bak.{{ ansible_date_time.iso8601 | regex_replace(':', '') }}"
+    remote_src: yes
+
+- name: Configurar puerto SSH personalizado
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?Port '
+    line: 'Port 61189'
+    state: present
+
+- name: Reiniciar SSH
+  ansible.builtin.systemd:
+    name: ssh
+    state: restarted

@@ -1,0 +1,50 @@
+---
+- name: Configurar MFA para usuario específico
+  hosts: usuarios_mfa
+  become: true
+  vars:
+    mfa_user: "juan"  # Por defecto, se puede sobrescribir con -e "mfa_user=otro"
+    secret_path: "/home/{{ mfa_user }}/.google_authenticator"
+    qr_path: "/home/{{ mfa_user }}/mfa_qr.png"
+  tasks:
+
+    - name: Crear secreto TOTP
+      become_user: "{{ mfa_user }}"
+      ansible.builtin.shell: |
+        head /dev/urandom | tr -dc A-Z2-7 | head -c 16
+      register: secret
+
+    - name: Crear archivo .google_authenticator
+      become_user: "{{ mfa_user }}"
+      ansible.builtin.copy:
+        dest: "{{ secret_path }}"
+        content: |
+          {{ secret.stdout }}
+          RATE_LIMIT 3 30
+          DISALLOW_REUSE
+          TOTP_AUTH
+          WINDOW_SIZE 3
+        mode: '0600'
+
+    - name: Generar imagen QR del TOTP
+      become_user: "{{ mfa_user }}"
+      ansible.builtin.command:
+        cmd: >
+          qrencode -o {{ qr_path }}
+          "otpauth://totp/ServerHardening:{{ mfa_user }}?secret={{ secret.stdout }}&issuer=ServerHardening&digits=6&period=30&algorithm=SHA1"
+      args:
+        creates: "{{ qr_path }}"
+
+    - name: Asegurar que la carpeta qr exista en bastion
+      delegate_to: localhost
+      run_once: true
+      ansible.builtin.file:
+        path: "./qr"
+        state: directory
+        mode: '0755'
+
+    - name: Copiar imagen QR al bastion
+      ansible.builtin.fetch:
+        src: "{{ qr_path }}"
+        dest: "./qr/{{ mfa_user }}_mfa_qr.png"
+        flat: yes

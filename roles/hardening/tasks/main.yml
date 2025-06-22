@@ -24,3 +24,6 @@
 
 - name: Aplicar politicas de contraseñas
   import_tasks: password_policies.yml
+
+- name: Aplicar configuración de MFA
+  import_tasks: googleauthenticator.yml

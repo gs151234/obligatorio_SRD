@@ -1,12 +1,12 @@
-- name: Copiar clave pública de sysadmin
-  ansible.posix.authorized_key:
-    user: sysadmin
-    state: present
-    key: "{{ lookup('file', sysadmin_ssh_key_path) }}"
+- name: Crear usuario ansible sin contraseña
+  ansible.builtin.user:
+    name: ansible
+    shell: /bin/bash
+    create_home: yes
+    password: '!'  # Deshabilita el login por contraseña
 
-- name: Deshabilitar login por contraseña
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^PasswordAuthentication'
-    line: 'PasswordAuthentication no'
-  notify: Reiniciar servidor ssh
+- name: Copiar clave pública para ansible
+  ansible.posix.authorized_key:
+    user: ansible
+    state: present
+    key: "{{ lookup('file', ansible_ssh_key_path) }}"
