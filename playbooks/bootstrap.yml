@@ -1,0 +1,39 @@
+---
+- name: Bootstrap inicial del sistema
+  hosts: linux
+  become: true
+  vars_files:
+    - ../inventory/vars/linux_vars.yml
+
+  tasks:
+    - name: Crear usuario ansible sin contraseña
+      ansible.builtin.user:
+        name: ansible
+        shell: /bin/bash
+        create_home: yes
+        password: '!'  # Deshabilita login por contraseña
+
+    - name: Agregar clave pública al usuario ansible
+      ansible.posix.authorized_key:
+        user: ansible
+        state: present
+        key: "{{ lookup('file', ansible_ssh_key_path) }}"
+
+    - name: Backup de sshd_config
+      ansible.builtin.copy:
+        src: /etc/ssh/sshd_config
+        dest: "/etc/ssh/sshd_config.bak.{{ ansible_date_time.iso8601 | regex_replace(':', '') }}"
+        remote_src: yes
+
+    - name: Cambiar puerto SSH (ej. 61189)
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?Port\s+'
+        line: 'Port 61189'
+      notify: Reiniciar servidor ssh
+
+  handlers:
+    - name: Reiniciar servidor ssh
+      ansible.builtin.service:
+        name: ssh
+        state: restarted
