@@ -21,3 +21,6 @@
 
 - name: Aplicar reglas iptables
   import_tasks: iptables.yml
+
+- name: Aplicar politicas de contraseñas
+  import_tasks: password_policies.yml
