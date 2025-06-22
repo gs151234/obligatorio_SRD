@@ -8,3 +8,20 @@
     name: systemd-timesyncd
     state: restarted
     enabled: true
+
+- name: Habilitar sincronización NTP
+  ansible.builtin.command:
+    cmd: timedatectl set-ntp true
+  changed_when: false
+  #changed_when: "output.stdout.find('NTP synchronized: yes') == -1" # Podrías usar esto para un changed_when más específico si capturas el output
+  register: output_ntp_status # Registra la salida para depuración si es necesario
+
+- name: Verificar estado de sincronización NTP
+  ansible.builtin.command:
+    cmd: timedatectl status
+  register: timedatectl_status_output
+  changed_when: false
+
+- name: Mostrar estado de NTP
+  ansible.builtin.debug:
+    msg: "{{ timedatectl_status_output.stdout }}"
