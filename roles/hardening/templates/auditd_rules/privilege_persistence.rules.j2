@@ -1,0 +1,9 @@
+-w /etc/sudoers -p wa -k sudoers_mod
+-w /etc/sudoers.d/ -p wa -k sudoers_mod
+-w /etc/passwd -p wa -k user_mod
+-w /etc/shadow -p wa -k user_mod
+-w /etc/group -p wa -k user_mod
+-w /etc/gshadow -p wa -k user_mod
+-w /etc/pam.d/ -p wa -k pam_mod
+-w /etc/rc.local -p wa -k persistence_mod
+-w /etc/systemd/system/ -p wa -k persistence_mod

@@ -2,16 +2,22 @@
 
 # PAM configuration for the Secure Shell service
 
-
-# Excluir usuarios en el grupo whitelist_nomfa del segundo factor
 auth    [success=1 default=ignore] pam_succeed_if.so user ingroup whitelist_nomfa
 
-# Aplicar Google Authenticator como segundo factor
+@include common-auth
+
 auth    required pam_google_authenticator.so nullok
 
 
+# Excluir usuarios en el grupo whitelist_nomfa del segundo factor
+#auth    [success=1 default=ignore] pam_succeed_if.so user ingroup whitelist_nomfa
+
+# Aplicar Google Authenticator como segundo factor
+#auth    required pam_google_authenticator.so nullok
+
+
 # Standard Un*x authentication.
-@include common-auth
+#@include common-auth
 
 # Disallow non-root logins when /etc/nologin exists.
 account    required     pam_nologin.so

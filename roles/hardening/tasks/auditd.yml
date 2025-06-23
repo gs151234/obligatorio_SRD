@@ -22,4 +22,5 @@
     - perm_mod.rules
     - session.rules
     - system_locale.rules
+    - privilege_persistence.rules
   notify: Aplicar reglas auditd

@@ -28,5 +28,30 @@
     state: started
   become: true
 
+- name: Copiar script de bloqueo sudo/su
+  ansible.builtin.copy:
+    src: wazuh_scripts/block_sudo_su_no_authorized.sh
+    dest: /var/ossec/active-response/bin/block_sudo_su_no_authorized.sh
+    owner: root
+    group: wazuh
+    mode: '0750'
+  become: true
 
+- name: Copiar script de bloqueo accesos no autorizados
+  ansible.builtin.copy:
+    src: wazuh_scripts/block_access_no_authorized.sh
+    dest: /var/ossec/active-response/bin/block_access_no_authorized.sh
+    owner: root
+    group: wazuh
+    mode: '0750'
+  become: true
+
+- name: Copiar lista blanca de usuarios
+  ansible.builtin.copy:
+    src: wazuh_scripts/white_users.list
+    dest: /var/ossec/etc/white_users.list
+    owner: root
+    group: wazuh
+    mode: '0640'
+  become: true
 
