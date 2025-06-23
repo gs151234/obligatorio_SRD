@@ -6,18 +6,24 @@ BLOCKED_USER_LOG="/var/log/bloqueo-usuario.log"
 AVOID_BLOCKED_ROOT="/var/log/wazuh-bloqueo-usuario.log"
 WHITE_LIST="/var/ossec/etc/white_users.list"
 
-echo "$INPUT" >> $DEBUG_LOG
+timestamp() {
+  date '+%Y-%m-%d %H:%M:%S'
+}
+
+echo "$(timestamp) - RAW INPUT: $INPUT" >> "$DEBUG_LOG"
 
 USER=$(echo "$INPUT" | jq -r '.parameters.alert.data.srcuser')
-echo "el usuario bloqueado es $USER" >> $DEBUG_LOG
+echo "$(timestamp) - El usuario bloqueado es: $USER" >> "$DEBUG_LOG"
 
 # Validación contra whitelist
 if grep -qw "$USER" "$WHITE_LIST"; then
-  echo "Intento de bloqueo evitado (usuario en whitelist): $USER" >> $AVOID_BLOCKED_ROOT
+  echo "$(timestamp) - Intento de bloqueo evitado (usuario en whitelist): $USER" >> "$AVOID_BLOCKED_ROOT"
   exit 0
 fi
 
 # Bloqueo del usuario
-usermod --lock "$USER" && echo "Usuario $USER bloqueado por Wazuh" >> $BLOCKED_USER_LOG
+usermod --lock "$USER" && echo "$(timestamp) - Usuario $USER bloqueado por Wazuh" >> "$BLOCKED_USER_LOG"
+
+# Cierre de sesión del usuario
 sudo pkill -KILL -u "$USER"
-echo "Sesión del usuario $USER cerrada" >> $DEBUG_LOG
+echo "$(timestamp) - Sesión del usuario $USER cerrada" >> "$DEBUG_LOG"
