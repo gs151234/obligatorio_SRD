@@ -9,4 +9,4 @@ sleep 10
 
 echo "[2/2] Ejecutando playhard con ansible y puerto 61189..."
 ansible-playbook playbooks/playhard.yml -i inventory/hosts.ini \
-  -u ansible --private-key ~/.ssh/ansible -e ansible_port=61189 -vvv
+  -u ansible --private-key ~/.ssh/ansible -e ansible_port=61189
