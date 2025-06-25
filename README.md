@@ -69,7 +69,7 @@ Implementación
 Hardening
 Se realiza la instalación de Debian 12 minimal que viene con SSH server y las standar system utilities. 
 
-Imagen 
+
 
 Por este motivo no es necesario deshabilitar procesos innecesarios. 
 
