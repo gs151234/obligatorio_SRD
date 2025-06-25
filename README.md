@@ -67,13 +67,43 @@ Configurar control de acceso granular con al menos dos roles diferentes.
 
 Implementación
 Hardening
+
+Aclaración:
 Se realiza la instalación de Debian 12 minimal que viene con SSH server y las standar system utilities. 
 
-
+IMAGEN DE DEBIAN MINIMAL
 
 Por este motivo no es necesario deshabilitar procesos innecesarios. 
 
- 
+Automatismo - Ansible
+
+Utilizamo Ansible para la autimatización de la tarea y lo ejecutamos desde un servidor bastion.
+La estructura es la siguiente
+IMAGEN DE TREE ANSIBLE
+
+Creamos claves publica/privadas para los usuarios Sysadmin (con passphrase) que es el administrador de los sistemas y Ansible.
+
+Ejecución
+
+El automatismo parte de un script llamado "deploy_42.sh" que contiene la ejección de 2 playbooks llamados "bootstrap.yml" y "playhard.yml".
+Con Sysadmin ejecutamos bootstrap.yml y preparamos el ambiente en el host:
+  Crea el usuario Ansible y se le da permisos de sudo sin contraseña.
+  Copia las claves publicas de Sysadmin y Ansible.
+  Cambia el puerto por defecto de SSH al 61189.
+Con Ansible ejecutamos "playhard.yml":
+  Se sinconizara la hora para evitar problemas de instalación de paquetes, además de que es un requerimiento para el MFA. 
+  Se actualizarán paquetes del sistema (apt update – apt upgadre) 
+  Se instalan paquetes necesarios para el resto de las tareas 
+  Se deshabilita el login de root por SSH
+  Se deshabilitarán módulos de filesystem innecesarios 
+  Se aplicarán reglas de Auditd 
+  Se agregan reglas de iptables 
+  Se aplican políticas de contraseña endureciendo los criterios por defecto 
+  Se configura MFA con Google Authenticator (no se aplica para usuarios dentro de un Whitelis preestablecida) 
+  Se instalará un agente de wazuh, copiando script que se utilizaran para los puntos 2 y 3 
+  Se instalará un agente de velocirraptor para recolectar datos de telemetría 
+
+
   WAF - Apache ModSecurity
   SIEM - Wazuh
   Analítica de Usuarios
