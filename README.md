@@ -82,9 +82,7 @@ A continuación, se detalla el conjunto de requerimientos a implementar:
 ### Hardening
 
 **Aclaración:**
-Se realiza la instalación de **Debian 12 minimal** que viene con SSH server y las *standard system utilities*.
-
-> *Por este motivo no es necesario deshabilitar procesos innecesarios.*
+Se realiza la instalación de **Debian 12 minimal** que viene con SSH server y las standard system utilities. Por este motivo no es necesario deshabilitar procesos innecesarios.
 
 IMAGEN DE DEBIAN MINIMAL
 
@@ -297,7 +295,7 @@ Utilizamos un Web server creado para pruebas.
 
 #### Configuraciones en el WAF
 
-```bash
+```xml
 <VirtualHost *:80>
         ServerAdmin webmaster@localhost
         ProxyPreserveHost On
@@ -362,7 +360,7 @@ SecRule REQUEST_HEADERS:Referer "!@contains 192.168.56.18" "chain,id:3005,phase:
 
 #### Servidor WEB
 
-```bash
+```xml
 <VirtualHost *:8080>
         ServerAdmin webmaster@localhost
         DocumentRoot /var/www/html
