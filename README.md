@@ -244,7 +244,7 @@ Estos scripts son similares, pero lo que cambia es el parámetro sobre el que ac
   <command>firewall-drop</command>
   <location>local</location>
   <level>12</level>
-  <rules_id>100300,100301,100500</rules_id>
+  <rules_id>100300,100500</rules_id>
 </active-response>
 
 <active-response>
