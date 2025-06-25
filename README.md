@@ -1,5 +1,3 @@
-Claro, entiendo. Aquí tienes el texto que me proporcionaste, formateado como un README en Markdown. He conservado todos los enlaces y el formato del código que incluiste.
-
 -----
 
 # obligatorio\_SRD
