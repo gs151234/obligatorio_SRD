@@ -86,25 +86,29 @@ Creamos claves publica/privadas para los usuarios Sysadmin (con passphrase) que 
 Ejecución
 
 El automatismo parte de un script llamado "deploy_42.sh" que contiene la ejección de 2 playbooks llamados "bootstrap.yml" y "playhard.yml".
+
 Con Sysadmin ejecutamos bootstrap.yml y preparamos el ambiente en el host:
   Crea el usuario Ansible y se le da permisos de sudo sin contraseña.
   Copia las claves publicas de Sysadmin y Ansible.
   Cambia el puerto por defecto de SSH al 61189.
+
 Con Ansible ejecutamos "playhard.yml":
   Se sinconizara la hora para evitar problemas de instalación de paquetes, además de que es un requerimiento para el MFA. 
-  Se actualizarán paquetes del sistema (apt update – apt upgadre) 
+  Se actualizan paquetes del sistema (apt update – apt upgadre) 
   Se instalan paquetes necesarios para el resto de las tareas 
   Se deshabilita el login de root por SSH
-  Se deshabilitarán módulos de filesystem innecesarios 
-  Se aplicarán reglas de Auditd 
-  Se agregan reglas de iptables 
-  Se aplican políticas de contraseña endureciendo los criterios por defecto 
-  Se configura MFA con Google Authenticator (no se aplica para usuarios dentro de un Whitelis preestablecida) 
-  Se instalará un agente de wazuh, copiando script que se utilizaran para los puntos 2 y 3 
-  Se instalará un agente de velocirraptor para recolectar datos de telemetría 
+  Se deshabilitan módulos de filesystem innecesarios para reducir superficie de ataque. 
+  Se aplican reglas de Auditd para auditar cambios en archivos del sistema que sean posible señal de actividad maliciosa.
+  Se configuran reglas de iptables para filtrar tráfico entrante y saliente. 
+  Se aplican políticas de contraseña endureciendo los criterios por defecto. 
+  Se configura MFA con Google Authenticator. Los usuarios Sysadmin, Ansible y Root no utilizan GA.  
+  Se instala el agente de wazuh y se copian los script que se utilizarán para el bloqueo de usuarios.
+  Se instala el agente de Velocirraptor para recolectar datos de telemetría. El servidor Bation es el que auspicia de server de Velociraptor. 
 
 
-  WAF - Apache ModSecurity
-  SIEM - Wazuh
-  Analítica de Usuarios
-  Solución de Acceso Administrativo - pfSense
+WAF - Apache ModSecurity
+
+
+SIEM - Wazuh
+Analítica de Usuarios
+Solución de Acceso Administrativo - pfSense
