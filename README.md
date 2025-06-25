@@ -165,38 +165,30 @@ Estas reglas detectan cuando un usuario no autorizado intenta utilizar "sudo" o 
   <rule id="100200" level="12" frequency="3" timeframe="30">
     <if_matched_sid>5405</if_matched_sid>
     <match>sudo</match>
+    <program_name>sudo</program_name>
     <description>Intentos de uso de sudo en usuario no autorizado</description>
     <group>auth_failed,sudo_attempt</group>
   </rule>
 
   <rule id="100201" level="12" frequency="6" timeframe="30">
-    <if_matched_sid>5502</if_matched_sid>
+    <if_matched_sid>5503</if_matched_sid>
     <match>su</match>
+    <program_name>su</program_name>
     <description>Intentos de uso de su en usuario no autorizado</description>
     <group>auth_failed,su_attempt</group>
   </rule>
 </group>
 ```
 
-**Reglas 100300 y 100301**
-La regla 300 detecta el intento fallido de conexiones ssh desde diferentes IP a un servidor con el mismo usuario.
-La regla 301 detecta el intento fallido de conexiones ssh desde una IP a diferentes servidores con el mismo usuario.
-
+**Reglas 100300**
+Esta regla detecta el intento fallido de conexiones ssh y bloquea .
 ```xml
 <group name="auth_distributed,ssh,custom,">
-  <rule id="100300" level="12" frequency="3" timeframe="60">
+  <!-- Mismo usuario sin contexto -->
+  <rule id="100300" level="10" frequency="2" timeframe="60">
     <if_matched_sid>5716</if_matched_sid>
     <same_user />
-    <different_srcip />
-    <description>Intentos fallidos del mismo usuario desde distintas IPs</description>
-    <group>authentication_failed,distributed_login</group>
-  </rule>
-
-  <rule id="100301" level="12" frequency="3" timeframe="60">
-    <if_matched_sid>5716</if_matched_sid>
-    <same_user />
-    <different_dstip />
-    <description>Intentos fallidos del mismo usuario en distintos servidores</description>
+    <description>Intentos fallidos del mismo usuario</description>
     <group>authentication_failed,distributed_login</group>
   </rule>
 </group>
@@ -252,7 +244,7 @@ Estos scripts son similares, pero lo que cambia es el parámetro sobre el que ac
   <command>firewall-drop</command>
   <location>local</location>
   <level>12</level>
-  <rules_id>100300,100301,100500</rules_id>
+  <rules_id>100300,100500</rules_id>
 </active-response>
 
 <active-response>
