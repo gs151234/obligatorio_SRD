@@ -165,6 +165,7 @@ Estas reglas detectan cuando un usuario no autorizado intenta utilizar "sudo" o 
   <rule id="100200" level="12" frequency="3" timeframe="30">
     <if_matched_sid>5405</if_matched_sid>
     <match>sudo</match>
+    <program_name>sudo</program_name>
     <description>Intentos de uso de sudo en usuario no autorizado</description>
     <group>auth_failed,sudo_attempt</group>
   </rule>
@@ -172,6 +173,7 @@ Estas reglas detectan cuando un usuario no autorizado intenta utilizar "sudo" o 
   <rule id="100201" level="12" frequency="6" timeframe="30">
     <if_matched_sid>5502</if_matched_sid>
     <match>su</match>
+    <program_name>su</program_name>
     <description>Intentos de uso de su en usuario no autorizado</description>
     <group>auth_failed,su_attempt</group>
   </rule>
