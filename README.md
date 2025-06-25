@@ -313,23 +313,25 @@ Utilizamos un Web server creado para pruebas.
 
 ```bash
 Chain INPUT (policy DROP)
-num   target        prot opt source                destination
-1     ACCEPT        0    --  0.0.0.0/0             0.0.0.0/0             ctstate RELATED,ESTABLISHED
-2     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:22
-3     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:80
-4     ACCEPT        17   --  0.0.0.0/0             0.0.0.0/0             udp dpt:1514
-5     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:1515
+num  target     prot opt source               destination
+1    ACCEPT     0    --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+2    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:22
+3    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80
+4    ACCEPT     17   --  192.168.56.20        0.0.0.0/0            udp dpt:1514
+5    ACCEPT     6    --  192.168.56.20        0.0.0.0/0            tcp dpt:1515
 
 Chain FORWARD (policy DROP)
-num   target        prot opt source                destination
+num  target     prot opt source               destination
 
 Chain OUTPUT (policy DROP)
-num   target        prot opt source                destination
-1     ACCEPT        0    --  0.0.0.0/0             0.0.0.0/0             ctstate RELATED,ESTABLISHED
-2     ACCEPT        6    --  0.0.0.0/0             192.168.56.101        tcp dpt:8080 ctstate NEW
-3     ACCEPT        17   --  0.0.0.0/0             0.0.0.0/0             udp dpt:53
-4     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:80
-5     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:443
+num  target     prot opt source               destination
+1    ACCEPT     0    --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+2    ACCEPT     6    --  0.0.0.0/0            192.168.56.101       tcp dpt:8080 ctstate NEW
+3    ACCEPT     17   --  0.0.0.0/0            0.0.0.0/0            udp dpt:53
+4    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80
+5    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:443
+6    ACCEPT     17   --  0.0.0.0/0            192.168.56.20        udp dpt:1514 ctstate NEW,ESTABLISHED
+7    ACCEPT     6    --  0.0.0.0/0            192.168.56.20        tcp dpt:1515 ctstate NEW,ESTABLISHED
 ```
 
 #### Reglas WAF
