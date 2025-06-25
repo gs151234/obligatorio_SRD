@@ -92,7 +92,7 @@ Con Sysadmin ejecutamos bootstrap.yml y preparamos el ambiente en el host:
   Copia las claves publicas de Sysadmin y Ansible.
   Cambia el puerto por defecto de SSH al 61189.
 
-Con Ansible ejecutamos "playhard.yml":
+Con Ansible ejecutamos "playhard.yml" que contine el rol "hardening" con las siguientes "tasks":
   Se sinconizara la hora para evitar problemas de instalación de paquetes, además de que es un requerimiento para el MFA. 
   Se actualizan paquetes del sistema (apt update – apt upgadre) 
   Se instalan paquetes necesarios para el resto de las tareas 
@@ -106,9 +106,269 @@ Con Ansible ejecutamos "playhard.yml":
   Se instala el agente de Velocirraptor para recolectar datos de telemetría. El servidor Bation es el que auspicia de server de Velociraptor. 
 
 
-WAF - Apache ModSecurity
-
-
 SIEM - Wazuh
+Para la implementación de Wazuh utilizamos el OVA disponible en la página oficial  
+https://packages.wazuh.com/4.x/vm/wazuh-4.12.0.ova 
+
+Para los casos de uso solicitados se generaron las siguientes reglas: 
+COLOCAR COMO SCRIPT
+
+Rules
+
+Reglas 100100 y 100101 
+Estas reglas funcionan en conjunto para monitorear las conexiones fuera de horario laboral 20:00 – 7:59 UTC -3 (en la regla figura como 23:00 – 10:59 hora UTCO porque el reloj interno de Wazuh lo toma así) y conexiones en días no laborables.
+
+<!-- *************************************************** --> 
+<!-- Intentos de acceso en días y horarios no permitidos --> 
+<!-- *************************************************** --> 
+<group name="policy_violation,"> 
+<rule id="100100" level="10"> 
+<if_group>authentication_success</if_group> 
+<time>23:00 - 10:59</time> 
+<description>Conexión fuera del horario laboral</description> 
+<group>login_time,pci_dss_10.2.5,pci_dss_10.6.1,gpg13_7.1,gpg13_7.2,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AU.6,</group> 
+<mitre> 
+<id>T1078</id> 
+</mitre> 
+</rule> 
+
+<rule id="100101" level="10"> 
+<if_group>authentication_success</if_group> 
+<weekday>saturday,sunday</weekday> 
+<description>Conexión días no laborables</description> 
+<mitre> 
+<id>T1078</id> 
+</mitre> 
+<group>login_day,pci_dss_10.2.5,pci_dss_10.6.1,gpg13_7.1,gpg13_7.2,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AU.6,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group> 
+</rule> 
+</group> 
+
+Reglas 100200 y 100201 
+Estas reglas detectan cuando un usuario no autorizado intenta utilizar "sudo" o "su".   
+
+<!-- *************************************************** --> 
+<!-- ***** Intentos de escalamiento de privilegios ***** --> 
+<!-- *************************************************** --> 
+<group name="privilege_escalation_detection"> 
+<!-- Intentos fallidos de sudo --> 
+<rule id="100200" level="12" frequency="3" timeframe="30"> 
+<if_matched_sid>5405</if_matched_sid> 
+<match>sudo</match> 
+<description>Intentos de uso de sudo en usuario no autorizado</description> 
+<group>auth_failed,sudo_attempt</group> 
+</rule> 
+
+<!-- Intentos fallidos de su --> 
+<rule id="100201" level="12" frequency="6" timeframe="30"> 
+<if_matched_sid>5502</if_matched_sid> 
+<match>su</match> 
+<description>Intentos de uso de su en usuario no autorizado</description> 
+<group>auth_failed,su_attempt</group> 
+</rule> 
+</group> 
+
+Reglas 100300 y 100301    
+La regla 300 detecta el intento fallido de conexiones ssh desde diferentes ip a un servidor con el mismo usuario.
+La regla 301 detecta el intento fallido de conexiones ssh desde una ip a diferentes servidores con el mismo usuario.
+
+<!-- *************************************************** --> 
+<!-- ***** Ataques de fuerza bruta distribuida SSH ***** --> 
+<!-- *************************************************** --> 
+<group name="auth_distributed,ssh,custom,"> 
+<!-- Mismo usuario desde IPs distintas --> 
+<rule id="100300" level="12" frequency="3" timeframe="60"> 
+<if_matched_sid>5716</if_matched_sid> 
+<same_user /> 
+<different_srcip /> 
+<description>Intentos fallidos del mismo usuario desde distintas IPs</description> 
+<group>authentication_failed,distributed_login</group> 
+</rule> 
+
+<!-- Mismo usuario hacia servidores distintos --> 
+<rule id="100301" level="12" frequency="3" timeframe="60"> 
+<if_matched_sid>5716</if_matched_sid> 
+<same_user /> 
+<different_dstip /> 
+<description>Intentos fallidos del mismo usuario en distintos servidores</description> 
+<group>authentication_failed,distributed_login</group> 
+</rule> 
+</group> 
+
+Regla 100500 
+Esta regla trabaja en conjunto con el WAF. Cuando el WAF bloquea intentos de ataques, esta regla se dispara para que active response mande la señal de bloqueo de ip.   
+
+<!-- *************************************************** --> 
+<!-- ******************* Ataques WEB ******************* -->  
+<!-- *************************************************** --> 
+<group name="apache,web,"> 
+<rule id="100500" level="14" frequency="5" timeframe="120"> 
+<if_matched_sid>30411</if_matched_sid> 
+<same_srcip /> 
+<description>Ataques reiterados WEB</description> 
+</rule> 
+</group> 
+
+Commands
+
+Utilizamos un script de Wazuh llamado firewall-drops y creamos 2 scrips para el bloqueo de usuarios
+
+ <!-- Custom Commands --> 
+<command> 
+<name>block_sudo_su_no_authorized</name> 
+<executable>block_sudo_su_no_authorized.sh</executable> 
+<timeout_allowed>no</timeout_allowed> 
+</command> 
+
+<command> 
+<name>block_access_no_authorized</name> 
+<executable>block_access_no_authorized.sh</executable> 
+<timeout_allowed>no</timeout_allowed> 
+</command> 
+
+Estos scripts son similares, pero lo que cambia es el parámetro sobre el que actúan uno sobre el source user (srcuser) y  el otro sobre destination user (dstuser).
+
+block_access_no_authorized.sh 
+Utiliza el dstuser.
+
+block_sudo_su_no_authorized.sh 
+Utiliza el srcuser.
+
+Active-response
+
+<!-- Active Response --> 
+<active-response> 
+<command>firewall-drop</command> 
+<location>local</location> 
+<level>12</level> 
+<rules_id>100300,100301,100500</rules_id> 
+</active-response> 
+
+<active-response> 
+<command>block_sudo_su_no_authorized</command> 
+<location>local</location> 
+<level>10</level> 
+<rules_id>100200,100201</rules_id> 
+</active-response> 
+
+<active-response> 
+<command>block_access_no_authorized</command> 
+<location>local</location> 
+<level>10</level> 
+<rules_id>100100,100101</rules_id> 
+</active-response> 
+
+Se creó una white list para los usuarios sysadmin, ansible, root y posibles usuarios que necesiten conectarse en un horario no laboral como un usuario de backup.
+
+Métricas (KPI)
+Generamos un Dashboard para ver el estado de la seguridad de la infraestructura.
+
+CAPTURA DE DASHBOARD
+
+
+WAF - Apache ModSecurity
+Para la implementación del WAF se siguieron los siguientes pasos: 
+
+Mod security 
+https://www.digitalocean.com/community/tutorials/how-to-set-up-mod_security-with-apache-on-debian-ubuntu 
+Reverse proxy 
+https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod_proxy-on-debian-8 
+
+Utilizamos un Web server generado para la prueba.
+
+Configuraciones en el WAF
+
+
+<VirtualHost *:80> 
+        ServerAdmin webmaster@localhost 
+        ProxyPreserveHost On 
+
+        ProxyPass / http://192.168.56.101:8080/ 
+        ProxyPassReverse / http://192.168.56.101:8080/ 
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log 
+        CustomLog ${APACHE_LOG_DIR}/access.log combined 
+
+</VirtualHost> 
+
+Reglas de Firewall
+
+Chain INPUT (policy DROP)
+num  target     prot opt source               destination
+1    ACCEPT     0    --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+2    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:22
+3    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80
+4    ACCEPT     17   --  0.0.0.0/0            0.0.0.0/0            udp dpt:1514
+5    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:1515
+
+Chain FORWARD (policy DROP)
+num  target     prot opt source               destination
+
+Chain OUTPUT (policy DROP)
+num  target     prot opt source               destination
+1    ACCEPT     0    --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+2    ACCEPT     6    --  0.0.0.0/0            192.168.56.101       tcp dpt:8080 ctstate NEW
+3    ACCEPT     17   --  0.0.0.0/0            0.0.0.0/0            udp dpt:53
+4    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80
+5    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:443
+
+
+Reglas waf  
+
+Regla 1 
+Bloquea intentos de de usuarios que quiera utilizar wget, sqlmap, pyth, nmap. Si se usa deniega el acceso (403)
+
+SecRule REQUEST_HEADERS:User-Agent "@rx (?i)(wget|sqlmap|python|nmap)" \ 
+  "id:50001,phase:1,deny,status:403,log,msg:'Bloqueo de User-Agent sospechoso'" 
+
+Regla 2 
+Bloquea URLs que intentan acceder a archivos sensibles con extensiones .zip, .sql, .bak, .env, .git, .log. Si se detecta deniega el acceso (403)
+
+SecRule REQUEST_URI "@rx \.(zip|sql|bak|env|git|log)$" \ 
+  "id:50002,phase:1,deny,status:403,log,msg:'Intento de descarga de archivo sensible'" 
+
+Regla 3 
+Bloque el acceso al sitio cuando detecta que el encablezado tiene un referer externo que no coincide con el dominio de nuestra página web. 
+
+SecRule REQUEST_HEADERS:Referer "!@contains 192.168.56.18" "chain,id:3005,phase:1,deny,status:403,log,msg:'Referer externo no autorizado (acceso por IP)'"
+  SecRule REQUEST_HEADERS:Referer "!@streq ''"
+
+
+Servidor WEB
+
+<VirtualHost *:8080>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html
+ 
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+ 
+Se deja escuhando solo el puerto 8080
+/etc/apache2/ports.conf
+#Listen 80
+Listen 8080
+
+Reglas de Firewall
+Chain INPUT (policy DROP)
+num  target     prot opt source               destination
+1    ACCEPT     0    --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+2    ACCEPT     6    --  192.168.56.0/24      0.0.0.0/0            tcp dpt:22 ctstate NEW
+3    ACCEPT     6    --  192.168.56.18        0.0.0.0/0            tcp dpt:8080 ctstate NEW
+
+Chain FORWARD (policy DROP)
+num  target     prot opt source               destination
+
+Chain OUTPUT (policy ACCEPT)
+num  target     prot opt source               destination
+1    ACCEPT     17   --  0.0.0.0/0            0.0.0.0/0            udp dpt:53
+2    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:53
+3    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80
+4    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:443
+
+
 Analítica de Usuarios
+Como se comentó en el punto de SIEM para la detección de actividades sospechosas de usuarios utilizamos las reglas de Wazuh 100100, 100101, 100200 y 100201 así como tabien utilizamos las relas de auditd para monitorisar cambios en archivos del sistema que son críticos.
+LINK A AUDITD
+FOTO DE 
+
 Solución de Acceso Administrativo - pfSense
