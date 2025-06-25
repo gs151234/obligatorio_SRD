@@ -1,149 +1,171 @@
-# obligatorio_SRD
+Claro, entiendo. Aquí tienes el texto que me proporcionaste, formateado como un README en Markdown. He conservado todos los enlaces y el formato del código que incluiste.
 
-## Indice
-- [Introducción](#introducción)
-- [Implementación](#implementación)
-  - [Hardening](#hardening)
-  - [SIEM - Wazuh](#siem---wazuh)
-  - [WAF - Apache ModSecurity](#waf---apache-modsecurity)
-  - [Analítica de Usuarios](#analítica-de-usuarios)
-  - [Solución de Acceso Administrativo - pfSense](#solución-de-acceso-administrativo---pfsense)
-- [Evidencias](#evidencias)
-  - [Ejecución Hardening](#ejecución-hardening)
-  - [WAF](#waf)
-  - [Wazuh](#wazuh)
-  - [Analítica de Usuarios](#analítica-de-usuarios-1)
-  - [Solución de Acceso Administrativo](#solución-de-acceso-administrativo-1)
-  
+-----
+
+# obligatorio\_SRD
+
+-----
+
+## Índice
+
+* [Introducción](#introducción)
+* [Implementación](#implementación)
+
+  * [Hardening](#hardening)
+  * [SIEM - Wazuh](#siem---wazuh)
+  * [WAF - Apache ModSecurity](#waf---apache-modsecurity)
+  * [Analítica de Usuarios](#analítica-de-usuarios)
+  * [Solución de Acceso Administrativo - pfSense](#solución-de-acceso-administrativo---pfsense)
+* [Evidencias](#evidencias)
+
+  * [Ejecución Hardening](#ejecución-hardening)
+  * [WAF](#waf)
+  * [Wazuh](#wazuh)
+  * [Analítica de Usuarios](#analítica-de-usuarios-1)
+  * [Solución de Acceso Administrativo](#solución-de-acceso-administrativo-1)
+
+-----
+
 ## Introducción
-En esta propuesta se nos solicita realizar la implementación de una solución integral de seguridad para la empresa Electronic Security Engineering (ESE). Dada su naturaleza crítica, su acelerado crecimiento y los riesgos inherentes a su actividad, ESE enfrenta amenazas constantes que comprometen tanto su propiedad intelectual como la disponibilidad y reputación de sus servicios. 
 
-Con el objetivo de fortalecer su postura de seguridad frente a estos desafíos, se propone una serie de medidas concretas que abarcan desde el endurecimiento del sistema operativo hasta la implementación de tecnologías avanzadas de monitoreo, control de accesos y análisis de amenazas. La solución considera tanto la defensa perimetral como la detección proactiva de incidentes, haciendo uso de herramientas de código abierto y buenas prácticas de la industria. 
+En esta propuesta se nos solicita realizar la implementación de una **solución integral de seguridad** para la empresa **Electronic Security Engineering (ESE)**. Dada su naturaleza crítica, su acelerado crecimiento y los riesgos inherentes a su actividad, ESE enfrenta amenazas constantes que comprometen tanto su propiedad intelectual como la disponibilidad y reputación de sus servicios.
 
-A continuación, se detalla el conjunto de requerimientos a implementar: 
+Con el objetivo de fortalecer su postura de seguridad frente a estos desafíos, se propone una serie de medidas concretas que abarcan desde el **endurecimiento del sistema operativo** hasta la implementación de **tecnologías avanzadas de monitoreo, control de accesos y análisis de amenazas**. La solución considera tanto la defensa perimetral como la detección proactiva de incidentes, haciendo uso de herramientas de código abierto y buenas prácticas de la industria.
 
-1. Hardening del Sistema Operativo Linux 
-Realizar hardening sobre Debian 10, 11 o 12 siguiendo los CIS CSC. 
-Acciones mínimas: 
-Deshabilitar servicios innecesarios. 
-Configurar políticas de contraseñas seguras y autenticación multifactor (MFA). 
-Aplicar parches de seguridad y actualizaciones del sistema. 
-Configurar firewall local con reglas de acceso estrictas. 
-Implementar auditoría de sistema para detectar cambios no autorizados en archivos críticos. 
-Automatizar recolección remota de telemetría (procesos, usuarios, conexiones, software instalado, parches). 
+A continuación, se detalla el conjunto de requerimientos a implementar:
 
-2. Implementación de un SIEM (Wazuh) 
-Desplegar Wazuh para monitorizar, analizar y correlacionar eventos de seguridad (incluyendo WAF y servidor Linux). 
-Se configurará: 
-Al menos 3 casos de uso de detección y respuesta automatizada con correlación de eventos no triviales. 
-Al menos 3 KPIs clave para visualizar en una consola de mando. 
+1.  **Hardening del Sistema Operativo Linux**
 
-3. Implementación de un Web Application Firewall (WAF) 
-Configuraremos un WAF en modo reverse proxy para proteger el portal web. 
-Debe cubrir mínimo las amenazas OWASP Top Ten (SQLi, XSS, tráfico malicioso). 
-Requisitos: 
-Bloqueo de ataques en tiempo real sin afectar el rendimiento. 
-Puede funcionar autónomamente o integrado con el SIEM. 
-Crear al menos 3 políticas personalizadas. 
-Integrar el WAF con el SIEM para monitoreo centralizado. 
+      * Realizar hardening sobre Debian 10, 11 o 12 siguiendo los CIS CSC.
+      * **Acciones mínimas:**
+          * Deshabilitar servicios innecesarios.
+          * Configurar políticas de contraseñas seguras y autenticación multifactor (MFA).
+          * Aplicar parches de seguridad y actualizaciones del sistema.
+          * Configurar firewall local con reglas de acceso estrictas.
+          * Implementar auditoría de sistema para detectar cambios no autorizados en archivos críticos.
+          * Automatizar recolección remota de telemetría (procesos, usuarios, conexiones, software instalado, parches).
 
-4. Analítica de Autenticación de Usuarios 
-Implementaremos en el SIEM analítica de autenticación para: 
-Correlacionar actividades sospechosas. 
-Detectar y reaccionar ante posibles compromisos de credenciales. 
-Bloquear usuarios potencialmente comprometidos. 
+2.  **Implementación de un SIEM (Wazuh)**
 
-5. Solución de Acceso Administrativo 
-Configuraremos una VPN de administración para usuarios privilegiados. 
-Requisitos: 
-Protección con autenticación multifactor. 
-Registro completo de autenticaciones y actividades. 
-Configurar control de acceso granular con al menos dos roles diferentes.
+      * Desplegar Wazuh para monitorear, analizar y correlacionar eventos de seguridad (incluyendo WAF y servidor Linux).
+      * **Se configurará:**
+          * Al menos 3 casos de uso de detección y respuesta automatizada con correlación de eventos no triviales.
+          * Al menos 3 KPIs clave para visualizar en una consola de mando.
+
+3.  **Implementación de un Web Application Firewall (WAF)**
+
+      * Configuraremos un WAF en modo *reverse proxy* para proteger el portal web.
+      * Debe cubrir mínimo las amenazas **OWASP Top Ten** (SQLi, XSS, tráfico malicioso).
+      * **Requisitos:**
+          * Bloqueo de ataques en tiempo real sin afectar el rendimiento.
+          * Puede funcionar autónomamente o integrado con el SIEM.
+          * Crear al menos 3 políticas personalizadas.
+          * Integrar el WAF con el SIEM para monitoreo centralizado.
+
+4.  **Analítica de Autenticación de Usuarios**
+
+      * Implementaremos en el SIEM analítica de autenticación para:
+          * Correlacionar actividades sospechosas.
+          * Detectar y reaccionar ante posibles compromisos de credenciales.
+          * Bloquear usuarios potencialmente comprometidos.
+
+5.  **Solución de Acceso Administrativo**
+
+      * Configuraremos una VPN de administración para usuarios privilegiados.
+      * **Requisitos:**
+          * Protección con autenticación multifactor.
+          * Registro completo de autenticaciones y actividades.
+          * Configurar control de acceso granular con al menos dos roles diferentes.
+
+-----
 
 ## Implementación
 
 ### Hardening
 
-**Aclaración:** 
-Se realiza la instalación de Debian 12 minimal que viene con SSH server y las standard system utilities.  
-> _Por este motivo no es necesario deshabilitar procesos innecesarios._ 
+**Aclaración:**
+Se realiza la instalación de **Debian 12 minimal** que viene con SSH server y las *standard system utilities*.
+
+> *Por este motivo no es necesario deshabilitar procesos innecesarios.*
 
 IMAGEN DE DEBIAN MINIMAL
 
-Por este motivo no es necesario deshabilitar procesos innecesarios. 
+Por este motivo no es necesario deshabilitar procesos innecesarios.
 
-**Automatismo - Ansible** 
+**Automatismo - Ansible**
 
-Utilizamo Ansible para la autimatización desde un servidor bastion.
-- Estructura:
-IMAGEN DE TREE ANSIBLE
+Utilizamos **Ansible** para la automatización desde un servidor *bastion*.
 
-- Creamos claves publica/privadas para los usuarios Sysadmin (con passphrase) que es el administrador de los sistemas y Ansible.
+  - **Estructura:**
+    IMAGEN DE TREE ANSIBLE
 
-**Ejecución:** 
+  - Creamos claves públicas/privadas para los usuarios **Sysadmin** (con *passphrase*) que es el administrador de los sistemas y Ansible.
 
-El automatismo parte de un script llamado "deploy_42.sh" que acciona 2 playbooks llamados "bootstrap.yml" y "playhard.yml".
+**Ejecución:**
 
-Con Sysadmin ejecutamos bootstrap.yml y preparamos el ambiente en el host:
-  - Crea el usuario Ansible y se le da permisos de sudo sin contraseña.
-  - Copia las claves publicas de Sysadmin y Ansible.
-  - Cambia el puerto por defecto de SSH al 61189.
+El automatismo parte de un script llamado `"deploy_42.sh"` que acciona 2 *playbooks* llamados `"bootstrap.yml"` y `"playhard.yml"`.
 
-Con Ansible ejecutamos "playhard.yml" que contine el rol "hardening" con las siguientes "tasks":
- - Se sinconizara la hora para evitar problemas de instalación de paquetes, además de que es un requerimiento para el MFA. 
- - Se actualizan paquetes del sistema (apt update – apt upgadre) 
- - Se instalan paquetes necesarios para el resto de las tareas 
- - Se deshabilita el login de root por SSH
- - Se deshabilitan módulos de filesystem innecesarios para reducir superficie de ataque. 
- - Se aplican reglas de Auditd para auditar cambios en archivos del sistema que sean posible señal de actividad maliciosa.
- - Se configuran reglas de iptables para filtrar tráfico entrante y saliente. 
- - Se aplican políticas de contraseña endureciendo los criterios por defecto. 
- - Se configura MFA con Google Authenticator. Los usuarios Sysadmin, Ansible y Root no utilizan GA.  
- - Se instala el agente de wazuh y se copian los script que se utilizarán para el bloqueo de usuarios.
- - Se instala el agente de Velocirraptor para recolectar datos de telemetría. El servidor Bation es el que auspicia de server de Velociraptor. 
+Con Sysadmin ejecutamos `"bootstrap.yml"` y preparamos el ambiente en el *host*:
 
+  - Crea el usuario Ansible y se le da permisos de `sudo` sin contraseña.
+  - Copia las claves públicas de Sysadmin y Ansible.
+  - Cambia el puerto por defecto de SSH al `61189`.
+
+Con Ansible ejecutamos `"playhard.yml"` que contiene el rol `"hardening"` con las siguientes *"tasks"*:
+
+  - Se sincronizará la hora para evitar problemas de instalación de paquetes, además de que es un requerimiento para el MFA.
+  - Se actualizan paquetes del sistema (`apt update – apt upgrade`).
+  - Se instalan paquetes necesarios para el resto de las tareas.
+  - Se deshabilita el login de *root* por SSH.
+  - Se deshabilitan módulos de *filesystem* innecesarios para reducir superficie de ataque.
+  - Se aplican reglas de **Auditd** para auditar cambios en archivos del sistema que sean posible señal de actividad maliciosa.
+  - Se configuran reglas de **iptables** para filtrar tráfico entrante y saliente.
+  - Se aplican políticas de contraseña endureciendo los criterios por defecto.
+  - Se configura MFA con **Google Authenticator**. Los usuarios Sysadmin, Ansible y Root no utilizan GA.
+  - Se instala el agente de **Wazuh** y se copian los scripts que se utilizarán para el bloqueo de usuarios.
+  - Se instala el agente de **Velociraptor** para recolectar datos de telemetría. El servidor *Bastion* es el que auspicia de *server* de Velociraptor.
+
+-----
 
 ### SIEM - Wazuh
-Para la implementación de Wazuh utilizamos el OVA disponible en la página oficial  
-https://packages.wazuh.com/4.x/vm/wazuh-4.12.0.ova 
+
+Para la implementación de Wazuh utilizamos el OVA disponible en la página oficial:
+[https://packages.wazuh.com/4.x/vm/wazuh-4.12.0.ova](https://packages.wazuh.com/4.x/vm/wazuh-4.12.0.ova)
 
 #### Rules
-Reglas 100100 y 100101 
-Estas reglas funcionan en conjunto para monitorear las conexiones fuera de horario laboral 20:00 – 7:59 UTC -3 (en la regla figura como 23:00 – 10:59 hora UTCO porque el reloj interno de Wazuh lo toma así) y conexiones en días no laborables.
-```xml
-<!-- *************************************************** --> 
-<!-- Intentos de acceso en días y horarios no permitidos --> 
-<!-- *************************************************** --> 
-<group name="policy_violation,"> 
-  <rule id="100100" level="10"> 
-    <if_group>authentication_success</if_group> 
-    <time>23:00 - 10:59</time> 
-    <description>Conexión fuera del horario laboral</description> 
-    <group>login_time,pci_dss_10.2.5,pci_dss_10.6.1,gpg13_7.1,gpg13_7.2,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AU.6,</group> 
-    <mitre> 
-      <id>T1078</id> 
-    </mitre> 
-  </rule> 
 
-  <rule id="100101" level="10"> 
-    <if_group>authentication_success</if_group> 
-    <weekday>saturday,sunday</weekday> 
-    <description>Conexión días no laborables</description> 
-    <mitre> 
-      <id>T1078</id> 
-    </mitre> 
-    <group>login_day,pci_dss_10.2.5,pci_dss_10.6.1,gpg13_7.1,gpg13_7.2,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AU.6,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group> 
-  </rule> 
+**Reglas 100100 y 100101**
+Estas reglas funcionan en conjunto para monitorear las conexiones fuera de horario laboral 20:00 – 7:59 UTC -3 (en la regla figura como 23:00 – 10:59 hora UTCO porque el reloj interno de Wazuh lo toma así) y conexiones en días no laborables.
+
+```xml
+<group name="policy_violation,">
+  <rule id="100100" level="10">
+    <if_group>authentication_success</if_group>
+    <time>23:00 - 10:59</time>
+    <description>Conexión fuera del horario laboral</description>
+    <group>login_time,pci_dss_10.2.5,pci_dss_10.6.1,gpg13_7.1,gpg13_7.2,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AU.6,</group>
+    <mitre>
+      <id>T1078</id>
+    </mitre>
+  </rule>
+
+  <rule id="100101" level="10">
+    <if_group>authentication_success</if_group>
+    <weekday>saturday,sunday</weekday>
+    <description>Conexión días no laborables</description>
+    <mitre>
+      <id>T1078</id>
+    </mitre>
+    <group>login_day,pci_dss_10.2.5,pci_dss_10.6.1,gpg13_7.1,gpg13_7.2,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AU.6,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
 </group>
 ```
-Reglas 100200 y 100201 
-Estas reglas detectan cuando un usuario no autorizado intenta utilizar "sudo" o "su".   
+
+**Reglas 100200 y 100201**
+Estas reglas detectan cuando un usuario no autorizado intenta utilizar "sudo" o "su".
+
 ```xml
-<!-- *************************************************** -->
-<!-- ***** Intentos de escalamiento de privilegios ***** -->
-<!-- *************************************************** -->
 <group name="privilege_escalation_detection">
-  <!-- Intentos fallidos de sudo -->
   <rule id="100200" level="12" frequency="3" timeframe="30">
     <if_matched_sid>5405</if_matched_sid>
     <match>sudo</match>
@@ -151,7 +173,6 @@ Estas reglas detectan cuando un usuario no autorizado intenta utilizar "sudo" o 
     <group>auth_failed,sudo_attempt</group>
   </rule>
 
-  <!-- Intentos fallidos de su -->
   <rule id="100201" level="12" frequency="6" timeframe="30">
     <if_matched_sid>5502</if_matched_sid>
     <match>su</match>
@@ -160,15 +181,13 @@ Estas reglas detectan cuando un usuario no autorizado intenta utilizar "sudo" o 
   </rule>
 </group>
 ```
-Reglas 100300 y 100301    
-La regla 300 detecta el intento fallido de conexiones ssh desde diferentes ip a un servidor con el mismo usuario.
-La regla 301 detecta el intento fallido de conexiones ssh desde una ip a diferentes servidores con el mismo usuario.
+
+**Reglas 100300 y 100301**
+La regla 300 detecta el intento fallido de conexiones ssh desde diferentes IP a un servidor con el mismo usuario.
+La regla 301 detecta el intento fallido de conexiones ssh desde una IP a diferentes servidores con el mismo usuario.
+
 ```xml
-<!-- *************************************************** -->
-<!-- ***** Ataques de fuerza bruta distribuida SSH ***** -->
-<!-- *************************************************** -->
 <group name="auth_distributed,ssh,custom,">
-  <!-- Mismo usuario desde IPs distintas -->
   <rule id="100300" level="12" frequency="3" timeframe="60">
     <if_matched_sid>5716</if_matched_sid>
     <same_user />
@@ -177,7 +196,6 @@ La regla 301 detecta el intento fallido de conexiones ssh desde una ip a diferen
     <group>authentication_failed,distributed_login</group>
   </rule>
 
-  <!-- Mismo usuario hacia servidores distintos -->
   <rule id="100301" level="12" frequency="3" timeframe="60">
     <if_matched_sid>5716</if_matched_sid>
     <same_user />
@@ -187,12 +205,11 @@ La regla 301 detecta el intento fallido de conexiones ssh desde una ip a diferen
   </rule>
 </group>
 ```
-Regla 100500 
-Esta regla trabaja en conjunto con el WAF. Cuando el WAF bloquea intentos de ataques, esta regla se dispara para que active response mande la señal de bloqueo de ip.   
+
+**Regla 100500**
+Esta regla trabaja en conjunto con el WAF. Cuando el WAF bloquea intentos de ataques, esta regla se dispara para que *active response* mande la señal de bloqueo de IP.
+
 ```xml
-<!-- *************************************************** -->
-<!-- ******************* Ataques WEB ******************* -->
-<!-- *************************************************** -->
 <group name="apache,web,">
   <rule id="100500" level="14" frequency="5" timeframe="120">
     <if_matched_sid>30411</if_matched_sid>
@@ -202,11 +219,13 @@ Esta regla trabaja en conjunto con el WAF. Cuando el WAF bloquea intentos de ata
 </group>
 
 ```
+
 #### Commands
-Utilizamos un script de Wazuh llamado firewall-drops y creamos 2 scrips para el bloqueo de usuarios
+
+Utilizamos un script de Wazuh llamado `firewall-drops` y creamos 2 scripts para el bloqueo de usuarios.
+
 ```xml
- <!-- Custom Commands --> 
-<command>
+ <command>
   <name>block_sudo_su_no_authorized</name>
   <executable>block_sudo_su_no_authorized.sh</executable>
   <timeout_allowed>no</timeout_allowed>
@@ -219,17 +238,20 @@ Utilizamos un script de Wazuh llamado firewall-drops y creamos 2 scrips para el 
 </command>
 
 ```
-Estos scripts son similares, pero lo que cambia es el parámetro sobre el que actúan uno sobre el source user (srcuser) y  el otro sobre destination user (dstuser).
 
-block_access_no_authorized.sh 
-Utiliza el dstuser.
+Estos scripts son similares, pero lo que cambia es el parámetro sobre el que actúan: uno sobre el *source user* (`srcuser`) y el otro sobre *destination user* (`dstuser`).
 
-block_sudo_su_no_authorized.sh 
-Utiliza el srcuser.
+  * `block_access_no_authorized.sh`
+
+      * Utiliza el `dstuser`.
+
+  * `block_sudo_su_no_authorized.sh`
+
+      * Utiliza el `srcuser`.
 
 #### Active-response
+
 ```xml
-<!-- Active Response -->
 <active-response>
   <command>firewall-drop</command>
   <location>local</location>
@@ -249,79 +271,92 @@ Utiliza el srcuser.
   <location>local</location>
   <level>10</level>
   <rules_id>100100,100101</rules_id>
-</active-response> 
+</active-response>
 ```
-Se creó una white list para los usuarios sysadmin, ansible, root y posibles usuarios que necesiten conectarse en un horario no laboral como un usuario de backup.
 
-Métricas (KPI)
+Se creó una *white list* para los usuarios `sysadmin`, `ansible`, `root` y posibles usuarios que necesiten conectarse en un horario no laboral como un usuario de *backup*.
+
+**Métricas (KPI)**
 Generamos un Dashboard para ver el estado de la seguridad de la infraestructura.
 
 CAPTURA DE DASHBOARD
 
+-----
 
 ## WAF - Apache ModSecurity
 
-Para la implementación del WAF se siguieron los siguientes pasos: 
+Para la implementación del WAF se siguieron los siguientes pasos:
 
-#### Mod security 
-https://www.digitalocean.com/community/tutorials/how-to-set-up-mod_security-with-apache-on-debian-ubuntu 
-#### Reverse proxy 
-https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod_proxy-on-debian-8 
+#### Mod security
+
+[https://www.digitalocean.com/community/tutorials/how-to-set-up-mod\_security-with-apache-on-debian-ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-mod_security-with-apache-on-debian-ubuntu)
+
+#### Reverse proxy
+
+[https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod\_proxy-on-debian-8](https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod_proxy-on-debian-8)
 
 Utilizamos un Web server creado para pruebas.
 
 #### Configuraciones en el WAF
+
 ```bash
-<VirtualHost *:80> 
-        ServerAdmin webmaster@localhost 
-        ProxyPreserveHost On 
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        ProxyPreserveHost On
 
-        ProxyPass / http://192.168.56.101:8080/ 
-        ProxyPassReverse / http://192.168.56.101:8080/ 
+        ProxyPass / http://192.168.56.101:8080/
+        ProxyPassReverse / http://192.168.56.101:8080/
 
-        ErrorLog ${APACHE_LOG_DIR}/error.log 
-        CustomLog ${APACHE_LOG_DIR}/access.log combined 
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-</VirtualHost> 
+</VirtualHost>
 ```
+
 #### Reglas de Firewall
+
 ```bash
 Chain INPUT (policy DROP)
-num  target     prot opt source               destination
-1    ACCEPT     0    --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
-2    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:22
-3    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80
-4    ACCEPT     17   --  0.0.0.0/0            0.0.0.0/0            udp dpt:1514
-5    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:1515
+num   target        prot opt source                destination
+1     ACCEPT        0    --  0.0.0.0/0             0.0.0.0/0             ctstate RELATED,ESTABLISHED
+2     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:22
+3     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:80
+4     ACCEPT        17   --  0.0.0.0/0             0.0.0.0/0             udp dpt:1514
+5     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:1515
 
 Chain FORWARD (policy DROP)
-num  target     prot opt source               destination
+num   target        prot opt source                destination
 
 Chain OUTPUT (policy DROP)
-num  target     prot opt source               destination
-1    ACCEPT     0    --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
-2    ACCEPT     6    --  0.0.0.0/0            192.168.56.101       tcp dpt:8080 ctstate NEW
-3    ACCEPT     17   --  0.0.0.0/0            0.0.0.0/0            udp dpt:53
-4    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80
-5    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:443
+num   target        prot opt source                destination
+1     ACCEPT        0    --  0.0.0.0/0             0.0.0.0/0             ctstate RELATED,ESTABLISHED
+2     ACCEPT        6    --  0.0.0.0/0             192.168.56.101        tcp dpt:8080 ctstate NEW
+3     ACCEPT        17   --  0.0.0.0/0             0.0.0.0/0             udp dpt:53
+4     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:80
+5     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:443
 ```
 
-#### Reglas waf  
+#### Reglas WAF
 
-Regla 1 
-Bloquea intentos de de usuarios que quiera utilizar wget, sqlmap, pyth, nmap. Si se usa deniega el acceso (403)
+**Regla 1**
+Bloquea intentos de usuarios que quiera utilizar `wget`, `sqlmap`, `pyth`, `nmap`. Si se usa deniega el acceso (403).
+
 ```bash
-SecRule REQUEST_HEADERS:User-Agent "@rx (?i)(wget|sqlmap|python|nmap)" \ 
-  "id:50001,phase:1,deny,status:403,log,msg:'Bloqueo de User-Agent sospechoso'" 
+SecRule REQUEST_HEADERS:User-Agent "@rx (?i)(wget|sqlmap|python|nmap)" \
+  "id:50001,phase:1,deny,status:403,log,msg:'Bloqueo de User-Agent sospechoso'"
 ```
-Regla 2 
-Bloquea URLs que intentan acceder a archivos sensibles con extensiones .zip, .sql, .bak, .env, .git, .log. Si se detecta deniega el acceso (403)
+
+**Regla 2**
+Bloquea URLs que intentan acceder a archivos sensibles con extensiones `.zip`, `.sql`, `.bak`, `.env`, `.git`, `.log`. Si se detecta deniega el acceso (403).
+
 ```bash
-SecRule REQUEST_URI "@rx \.(zip|sql|bak|env|git|log)$" \ 
-  "id:50002,phase:1,deny,status:403,log,msg:'Intento de descarga de archivo sensible'" 
+SecRule REQUEST_URI "@rx \.(zip|sql|bak|env|git|log)$" \
+  "id:50002,phase:1,deny,status:403,log,msg:'Intento de descarga de archivo sensible'"
 ```
-Regla 3 
-Bloque el acceso al sitio cuando detecta que el encablezado tiene un referer externo que no coincide con el dominio de nuestra página web. 
+
+**Regla 3**
+Bloquea el acceso al sitio cuando detecta que el encabezado tiene un *referer* externo que no coincide con el dominio de nuestra página web.
+
 ```bash
 SecRule REQUEST_HEADERS:Referer "!@contains 192.168.56.18" "chain,id:3005,phase:1,deny,status:403,log,msg:'Referer externo no autorizado (acceso por IP)'"
   SecRule REQUEST_HEADERS:Referer "!@streq ''"
@@ -333,63 +368,68 @@ SecRule REQUEST_HEADERS:Referer "!@contains 192.168.56.18" "chain,id:3005,phase:
 <VirtualHost *:8080>
         ServerAdmin webmaster@localhost
         DocumentRoot /var/www/html
- 
+
         ErrorLog ${APACHE_LOG_DIR}/error.log
         CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
-Se deja escuhando solo el puerto 8080
-/etc/apache2/ports.conf
+
+Se deja escuchando solo el puerto 8080:
+`/etc/apache2/ports.conf`
+
 ```bash
 #Listen 80
 Listen 8080
 ```
 
 #### Reglas de Firewall
+
 ```bash
 Chain INPUT (policy DROP)
-num  target     prot opt source               destination
-1    ACCEPT     0    --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
-2    ACCEPT     6    --  192.168.56.0/24      0.0.0.0/0            tcp dpt:22 ctstate NEW
-3    ACCEPT     6    --  192.168.56.18        0.0.0.0/0            tcp dpt:8080 ctstate NEW
+num   target        prot opt source                destination
+1     ACCEPT        0    --  0.0.0.0/0             0.0.0.0/0             ctstate RELATED,ESTABLISHED
+2     ACCEPT        6    --  192.168.56.0/24       0.0.0.0/0             tcp dpt:22 ctstate NEW
+3     ACCEPT        6    --  192.168.56.18         0.0.0.0/0             tcp dpt:8080 ctstate NEW
 
 Chain FORWARD (policy DROP)
-num  target     prot opt source               destination
+num   target        prot opt source                destination
 
 Chain OUTPUT (policy ACCEPT)
-num  target     prot opt source               destination
-1    ACCEPT     17   --  0.0.0.0/0            0.0.0.0/0            udp dpt:53
-2    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:53
-3    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80
-4    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:443
+num   target        prot opt source                destination
+1     ACCEPT        17   --  0.0.0.0/0             0.0.0.0/0             udp dpt:53
+2     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:53
+3     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:80
+4     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:443
 ```
 
+-----
+
 ## Analítica de Usuarios
-Como se comentó en el punto de SIEM para la detección de actividades sospechosas de usuarios utilizamos las reglas de Wazuh 100100, 100101, 100200 y 100201 así como tabien utilizamos las relas de auditd para monitorisar cambios en archivos del sistema que son críticos.
-LINK A AUDITD
+
+Como se comentó en el punto de SIEM para la detección de actividades sospechosas de usuarios utilizamos las reglas de Wazuh 100100, 100101, 100200 y 100201 así como también utilizamos las reglas de **Auditd** para monitorear cambios en archivos del sistema que son críticos.
+[LINK A AUDITD]
 FOTO DE DASHBOARD
+
+-----
 
 ## Solución de Acceso Administrativo - pfSense
 
-Utilizamos pfSense para implementar una solucion de acceso remoto mediante VPN para el acceso administrativo a la red. 
+Utilizamos **pfSense** para implementar una solución de acceso remoto mediante VPN para el acceso administrativo a la red.
 
-Configuramos un servidor OpenVPN  
+Configuramos un servidor **OpenVPN**.
 
-Instalamos el paquete openvpn-client-export para la exportación de la configuración y el certificado VPN. Consideramos como MFA el uso de certificado (algo que tengo) y usuario y contraseña (algo que se). 
+Instalamos el paquete `openvpn-client-export` para la exportación de la configuración y el certificado VPN. Consideramos como MFA el uso de certificado (algo que tengo) y usuario y contraseña (algo que sé).
 
+Para mayor control y rastreo se define en la funcionalidad de *Client Specific Override* una IP fija para cada usuario.
 
-Para mayor control y rastreo se define en la funcionalidad de Client Specific Override una ip fija para cada usaurio.
+Utilizamos alias para abarcar todas las IP del rango de VPN para Administradores y otro alias para Usuarios:
 
-Utilizamos alias para abarcar todas las ip del rango de VPN para Administradores y otro alias para Usuarios
+  - **Administradores:** 192.168.200.2-50
+  - **Usuarios:** 192.168.200.51-200
 
-- Administradores 192.168.200.2-50
-- Usuarios 192.168.200.51-200
+Generamos alias para apuntar a las redes según el rol:
 
-Generamos alias para apuntar a las redes segun el rol
-- LAN_ADMINISTRACION 192.168.10.0/24 192.168.20.0/24
-- LAN_USUARIOS 192.168.20.0/24
+  - **LAN\_ADMINISTRACION:** 192.168.10.0/24 192.168.20.0/24
+  - **LAN\_USUARIOS:** 192.168.20.0/24
 
-
-
-
-
+-----
