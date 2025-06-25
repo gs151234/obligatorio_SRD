@@ -319,6 +319,7 @@ num  target     prot opt source               destination
 3    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:80
 4    ACCEPT     17   --  192.168.56.20        0.0.0.0/0            udp dpt:1514
 5    ACCEPT     6    --  192.168.56.20        0.0.0.0/0            tcp dpt:1515
+6    ACCEPT     6    --  192.168.56.20        0.0.0.0/0            tcp spt:1514 ctstate ESTABLISHED
 
 Chain FORWARD (policy DROP)
 num  target     prot opt source               destination
@@ -332,6 +333,7 @@ num  target     prot opt source               destination
 5    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:443
 6    ACCEPT     17   --  0.0.0.0/0            192.168.56.20        udp dpt:1514 ctstate NEW,ESTABLISHED
 7    ACCEPT     6    --  0.0.0.0/0            192.168.56.20        tcp dpt:1515 ctstate NEW,ESTABLISHED
+8    ACCEPT     6    --  0.0.0.0/0            192.168.56.20        tcp dpt:1514 ctstate NEW,ESTABLISHED
 ```
 
 #### Reglas WAF
