@@ -184,7 +184,8 @@ La regla 301 detecta el intento fallido de conexiones ssh desde una IP a diferen
 
 ```xml
 <group name="auth_distributed,ssh,custom,">
-  <rule id="100300" level="12" frequency="3" timeframe="60">
+  <!-- Mismo usuario desde IPs distintas -->
+  <rule id="100300" level="12" frequency="4" timeframe="60">
     <if_matched_sid>5716</if_matched_sid>
     <same_user />
     <different_srcip />
@@ -192,10 +193,11 @@ La regla 301 detecta el intento fallido de conexiones ssh desde una IP a diferen
     <group>authentication_failed,distributed_login</group>
   </rule>
 
-  <rule id="100301" level="12" frequency="3" timeframe="60">
+  <!-- Mismo usuario hacia servidores distintos -->
+  <rule id="100301" level="12" frequency="4" timeframe="60">
     <if_matched_sid>5716</if_matched_sid>
     <same_user />
-    <different_dstip />
+    <same_field name="agent.ip" negate="yes"/>
     <description>Intentos fallidos del mismo usuario en distintos servidores</description>
     <group>authentication_failed,distributed_login</group>
   </rule>
