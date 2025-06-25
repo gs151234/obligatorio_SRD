@@ -432,11 +432,5 @@ Generamos alias para apuntar a las redes según el rol:
   - **LAN\_ADMINISTRACION:** 192.168.10.0/24 192.168.20.0/24
   - **LAN\_USUARIOS:** 192.168.20.0/24
 
-Logs
-  <remote>
-    <connection>syslog</connection>
-    <port>1514</port>
-    <protocol>udp</protocol>
-  </remote>
 
 -----
