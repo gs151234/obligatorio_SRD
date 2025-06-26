@@ -240,6 +240,9 @@ Con Ansible ejecutamos `"playhard.yml"` que contiene el rol `"hardening"` con la
 - Se instala el agente de **Velociraptor** para recolectar datos de telemetría. El servidor *Bastion* es el que auspicia de *server*.  | [YML](roles/hardening/tasks/velociraptor.yml) |<br>
 **Evidencia de ejecución:** <br>
  ![Evidencia de ejecución](documents/images/1-Hardening/hardening-velociraptor_con_agentes.png)
+<br>
+
+[Volver al índice](#indice)
 
 -----
 
