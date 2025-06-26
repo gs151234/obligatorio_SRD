@@ -621,5 +621,6 @@ Usuario
 ![conectividad_user](documents/images/5-Acceso_administrativo/pfsense-prueba_conectividad_user.png)<br>
 <br>
 Para ver más configuraciones acceder a este link [Evidencia](documents/images/5-Acceso_administrativo)
+
 <br>
 -----
