@@ -264,10 +264,29 @@ Estos scripts son similares, pero lo que cambia es el parámetro sobre el que ac
 
 Se creó una *white list* para los usuarios `sysadmin`, `ansible`, `root` y posibles usuarios que necesiten conectarse en un horario no laboral como un usuario de *backup*.
 
-**Métricas (KPI)**
-Generamos un Dashboard para ver el estado de la seguridad de la infraestructura.
+## Métricas (KPI)
+se definieron tres  KPI (Key Performance Indicator, o Indicador Clave de Desempeño) para evaluar la eficacia y eficiencia de las estrategias de seguridad informática dentro de una organización que nos permiten mantener un monitoreo constante y ayudarnos a tomar decisiones ante incidentes. 
 
-CAPTURA DE DASHBOARD
+Para ellos configuramos en un dashboard personalizado en Wazuh 
+
+**Gráfico de alertas criticas vs alertas totales:**
+
+   * Grráfico circular donde sea realizara una comparativa de las alertas críticas de nivel 10 a nivel 15 sobre el total de las alertas. 
+
+   * Este KPI nos permite detectar cuando el nivel de alteras críticas supera el umbral esperado de un 5% del total de las alertas. Permitiendo evaluar si las acciones de seguridad propuestas están siendo efectivas. 
+
+**Indicador de alertas críticas en las últimas 24 horas**
+
+   * Contador que mide la cantidad de alertas críticas que se dieron en las últimas 24hs
+
+   * Este KPI nos permite ver actividad reciente de alto riesgo. Tambien ayuda a validar las acciones de respuesta automática implementadas.  
+
+**Grafica de ataques a la web por unidad de tiempo**
+
+   * Gráfico de línea que un registro de ataques a la página web em función del tiempo. 
+
+   * Este KPI nos permite monitorear, detectar amenazas y validar la efectividad del WAF y los active response ante distintos ataques (XSS, SQLi, User-Agent malicioso, Referer anómalo, etc.). 
+
 
 -----
 
