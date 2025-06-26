@@ -3,6 +3,25 @@
 # obligatorio\_SRD
 
 -----
+## Docente 
+**Mauricio Germán Campiglia Hernández**
+
+## Estudiantes
+
+**Diego Vazquez** 
+- CI: 4.874.410-9 
+- N° de estudiante: 302392 
+
+**Giovanni Storti** 
+- CI: 4.000.995-1
+- N° de estudiante: 151234 
+
+## Declaración de autoría 
+Nosotros, Diego Vazquez Alberdi y Giovanni Storti Larrama, con documentos de identificación 4.874.410-9 y 4.000.995-1 respectivamente, y estudiantes de la carrera Analista en Infraestructura Informática, en relación con el Obligatorio de **Seguridad en Redes y Datos** para su defensa y evaluación en el curso 2025, declaramos que asumimos la originalidad de dicho trabajo, entendida en el sentido de que no han usado fuentes sin citarlas debidamente.  
+
+## Fecha de entrega
+- 26 de junio de 2025
+-----
 
 ## Índice
 
@@ -14,13 +33,6 @@
   * [WAF - Apache ModSecurity](#waf---apache-modsecurity)
   * [Analítica de Usuarios](#analítica-de-usuarios)
   * [Solución de Acceso Administrativo - pfSense](#solución-de-acceso-administrativo---pfsense)
-* [Evidencias](#evidencias)
-
-  * [Ejecución Hardening](#ejecución-hardening)
-  * [WAF](#waf)
-  * [Wazuh](#wazuh)
-  * [Analítica de Usuarios](#analítica-de-usuarios-1)
-  * [Solución de Acceso Administrativo](#solución-de-acceso-administrativo-1)
 
 -----
 
