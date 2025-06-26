@@ -609,6 +609,9 @@ Las reglas aplicadas permiten que los administradores tengan acceso a las LAN, m
 <br>
 <br>
 
+**Logs de autenticación** <br>
+El registro de autenticación de los usuarios en este caso lo veremos en el **System Logs** de pfSense <br>
+![logs](documents/images/5-Acceso_administrativo/pfsense-logs.png)
 
 
 **Evidencia de conectividad**
