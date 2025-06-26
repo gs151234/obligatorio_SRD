@@ -360,13 +360,6 @@ Se creó una *white list* para los usuarios `sysadmin`, `ansible`, `root` y posi
 <br>
 <br>
 
-**Evidencias de ejecución** <br>
-En la siguiente link se puenden ver evidencias de ejecución de las reglas. [Evidencia](documents/images/2-Wazuh)
-<br>
-<br>
-
-
-
 **Métricas (KPI)** <br>
 Se definieron tres  KPI (Key Performance Indicator, o Indicador Clave de Desempeño) para evaluar la eficacia y eficiencia de las estrategias de seguridad informática dentro de la organización, que nos permiten mantener un monitoreo constante y ayudarnos a tomar decisiones ante incidentes. 
 
@@ -387,6 +380,8 @@ Se definieron tres  KPI (Key Performance Indicator, o Indicador Clave de Desempe
    * Gráfico de línea que un registro de ataques a la página web em función del tiempo. 
 
    * Este KPI nos permite monitorear, detectar amenazas y validar la efectividad del WAF y los active response ante distintos ataques (XSS, SQLi, User-Agent malicioso, Referer anómalo, etc.). 
+<br>
+<br>
 
 
 **Evidencias de ejecución** <br>
