@@ -389,6 +389,11 @@ Se definieron tres  KPI (Key Performance Indicator, o Indicador Clave de Desempe
    * Este KPI nos permite monitorear, detectar amenazas y validar la efectividad del WAF y los active response ante distintos ataques (XSS, SQLi, User-Agent malicioso, Referer anómalo, etc.). 
 
 
+**Evidencias de ejecución** <br>
+En la siguiente link se puenden ver evidencias de ejecución de las reglas. [Evidencia](documents/images/2-Wazuh)
+
+<br>
+<br>
 -----
 
 ## WAF - Apache ModSecurity
