@@ -614,12 +614,12 @@ El registro de autenticación de los usuarios en este caso lo veremos en el **Sy
 ![logs](documents/images/5-Acceso_administrativo/pfsense-logs.png)
 
 
-**Evidencia de conectividad**
-
-![conectividad_admin](documents/images/5-Acceso_administrativo/pfsense-prueba_conectividad_admin.png)
-
+**Evidencia de conectividad**<br>
+Administrador
+![conectividad_admin](documents/images/5-Acceso_administrativo/pfsense-prueba_conectividad_admin.png)<br>
+Usuario 
 ![conectividad_user](documents/images/5-Acceso_administrativo/pfsense-prueba_conectividad_user.png)<br>
-
+<br>
 Para ver más configuraciones acceder a este link [Evidencia](documents/images/5-Acceso_administrativo)
-
+<br>
 -----
