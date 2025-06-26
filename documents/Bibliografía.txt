@@ -1,0 +1,12 @@
+https://documentation.wazuh.com/current/quickstart.html
+https://docs.opensearch.org/docs/2.19/field-types/supported-field-types/date/
+Modsecurity - https://www.youtube.com/watch?v=am_XmXw7hm0
+https://www.digitalocean.com/community/tutorials/how-to-set-up-mod_security-with-apache-on-debian-ubuntu
+https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod_proxy-on-debian-8
+https://docs.redhat.com/en/documentation/red_hat_jboss_core_services/2.4.37/html/red_hat_jboss_core_services_modsecurity_guide/rules_making
+https://docs.velociraptor.app/docs/deployment/server/deployment_example/
+Velociraptor - https://www.youtube.com/watch?v=p9pQ2g-18o4
+pfSense - https://www.youtube.com/watch?v=AeabQDl71f8
+https://www.youtube.com/@LearnLinuxTV
+Documentación de clase
+https://chatgpt.com/
