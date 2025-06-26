@@ -171,24 +171,46 @@ Con Sysadmin ejecutamos `"bootstrap.yml"` y preparamos el ambiente en el *host*:
 Con Ansible ejecutamos `"playhard.yml"` que contiene el rol `"hardening"` con las siguientes *"tasks"*:
 
   - Se sincronizará la hora para evitar problemas de instalación de paquetes, además de que es un requerimiento para el MFA. *- Se agregó este paso porque al utilizar máquinas clonadas que no tenían la hora actualizada o demoraba en actualizar -*
- - Se actualizan **paquetes del sistema** (`apt update – apt upgrade`).  | [YML](roles/hardening/tasks/updates_upgrades.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-actualizaciones.png) | 
+  - 
+ - Se actualizan **paquetes del sistema** (`apt update – apt upgrade`).  | [YML](roles/hardening/tasks/updates_upgrades.yml) |<br>
+ **Evidencia de ejecución:** <br>
+  ![Evidencia de ejecución](documents/images/1-Hardening/hardening-actualizaciones.png)
 
-- Se instalan **paquetes necesarios** para el resto de las tareas.  | [YML](roles/hardening/tasks/packages.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-paquetes_instalados.png) | 
+- Se instalan **paquetes necesarios** para el resto de las tareas.  | [YML](roles/hardening/tasks/packages.yml) |<br>
+**Evidencia de ejecución:** <br>
+ ![Evidencia de ejecución](documents/images/1-Hardening/hardening-paquetes_instalados.png)
 
-- Se deshabilita el **login de *root*** por SSH. |  [YML](roles/hardening/tasks/no_ssh_root.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-no_ssh_root.png) | 
+- Se deshabilita el **login de *root*** por SSH. |  [YML](roles/hardening/tasks/no_ssh_root.yml) |<br>
+**Evidencia de ejecución:** <br>
+ ![Evidencia de ejecución](documents/images/1-Hardening/hardening-no_ssh_root.png) 
 
-- Se deshabilitan **módulos de *filesystem*** innecesarios para reducir superficie de ataque. |  [YML](roles/hardening/tasks/filesystem_modules.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-modulos.png) | 
+- Se deshabilitan **módulos de *filesystem*** innecesarios para reducir superficie de ataque. |  [YML](roles/hardening/tasks/filesystem_modules.yml) |<br>
+**Evidencia de ejecución:** <br>
+ ![Evidencia de ejecución](documents/images/1-Hardening/hardening-modulos.png) 
 
-- Se aplican reglas de **Auditd** para auditar cambios en archivos del sistema que sean posible señal de actividad maliciosa.  | [YML](roles/hardening/tasks/auditd.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-auditd.png) | 
+- Se aplican reglas de **Auditd** para auditar cambios en archivos del sistema que sean posible señal de actividad maliciosa.  | [YML](roles/hardening/tasks/auditd.yml) |<br>
+**Evidencia de ejecución:** <br>
+![Evidencia de ejecución](documents/images/1-Hardening/hardening-auditd.png) 
 
-- Se configuran reglas de **iptables** para filtrar tráfico entrante y saliente.  | [YML](roles/hardening/tasks/iptables.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-iptables.png) | 
+- Se configuran reglas de **iptables** para filtrar tráfico entrante y saliente.  | [YML](roles/hardening/tasks/iptables.yml) |<br>
+**Evidencia de ejecución:** <br>
+![Evidencia de ejecución](documents/images/1-Hardening/hardening-iptables.png) 
 
-- Se aplican **políticas de contraseña** endureciendo los criterios por defecto.  | [YML](roles/hardening/tasks/password_policies.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-politicas_de_contraseñas.png) | 
+- Se aplican **políticas de contraseña** endureciendo los criterios por defecto.  | [YML](roles/hardening/tasks/password_policies.yml) |<br>
+**Evidencia de ejecución:** <br>
+![Evidencia de ejecución](documents/images/1-Hardening/hardening-politicas_de_contraseñas.png) 
 
-- Se configura MFA con **Google Authenticator**. Los usuarios Sysadmin, Ansible y Root no utilizan GA.  | [YML](roles/hardening/tasks/googleauthenticator.yml) |  [Evidencia de ejecución](documents/images/1-Hardening/hardening-googleauth.png) | 
+- Se configura MFA con **Google Authenticator**. Los usuarios Sysadmin, Ansible y Root no utilizan GA.  | [YML](roles/hardening/tasks/googleauthenticator.yml) |<br>
+**Evidencia de ejecución:** <br>
+![Evidencia de ejecución](documents/images/1-Hardening/hardening-googleauth.png) 
 
-- Se instala el agente de **Wazuh** y se copian los scripts que se utilizarán para el bloqueo de usuarios.  | [YML](roles/hardening/tasks/wazuh_agent.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-paquetes_instalados.png) | 
-- Se instala el agente de **Velociraptor** para recolectar datos de telemetría. El servidor *Bastion* es el que auspicia de *server* de Velociraptor.  | [YML](roles/hardening/tasks/velociraptor.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-velociraptor_con_agentes.png) | 
+- Se instala el agente de **Wazuh** y se copian los scripts que se utilizarán para el bloqueo de usuarios.  | [YML](roles/hardening/tasks/wazuh_agent.yml) |<br>
+**Evidencia de ejecución:** <br>
+ ![Evidencia de ejecución](documents/images/1-Hardening/hardening-paquetes_instalados.png)
+
+- Se instala el agente de **Velociraptor** para recolectar datos de telemetría. El servidor *Bastion* es el que auspicia de *server*.  | [YML](roles/hardening/tasks/velociraptor.yml) |<br>
+**Evidencia de ejecución:** <br>
+ ![Evidencia de ejecución](documents/images/1-Hardening/hardening-velociraptor_con_agentes.png)
 
 -----
 
@@ -335,14 +357,12 @@ Estos scripts son similares. Bloquean a los usuarios, pero lo que cambia en cada
 
 Se creó una *white list* para los usuarios `sysadmin`, `ansible`, `root` y posibles usuarios que necesiten conectarse en un horario no laboral como un usuario de *backup*.
 
-En la siguiente carpeta se puenden ver evidencias de ejecución de las reglas en Wazu [Evidencia](documents/images/2-Wazuh)
+En la siguiente carpeta se puenden ver evidencias de ejecución de las reglas. [Evidencia](documents/images/2-Wazuh)
 
 
 
 ## Métricas (KPI)
-se definieron tres  KPI (Key Performance Indicator, o Indicador Clave de Desempeño) para evaluar la eficacia y eficiencia de las estrategias de seguridad informática dentro de una organización que nos permiten mantener un monitoreo constante y ayudarnos a tomar decisiones ante incidentes. 
-
-Para ellos configuramos en un dashboard personalizado en Wazuh 
+Se definieron tres  KPI (Key Performance Indicator, o Indicador Clave de Desempeño) para evaluar la eficacia y eficiencia de las estrategias de seguridad informática dentro de la organización, que nos permiten mantener un monitoreo constante y ayudarnos a tomar decisiones ante incidentes. 
 
 **Gráfico de alertas criticas vs alertas totales:**
 
@@ -373,13 +393,19 @@ Para la implementación del WAF se siguieron los siguientes pasos:
 
 [https://www.digitalocean.com/community/tutorials/how-to-set-up-mod\_security-with-apache-on-debian-ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-mod_security-with-apache-on-debian-ubuntu)
 
+![modsecurity]
+
 #### Reverse proxy
 
 [https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod\_proxy-on-debian-8](https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod_proxy-on-debian-8)
 
+
+
 Utilizamos un Web server creado para pruebas.
 
-#### Configuraciones en el WAF
+#### Configuraciones
+
+#### Reverse proxy
 
 ```xml
 <VirtualHost *:80>
