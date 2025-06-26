@@ -320,7 +320,7 @@ Utilizamos un script de Wazuh llamado `firewall-drops` y creamos 2 scripts para 
 
 ```
 
-Estos scripts son similares. Bloquean a los usuarios, pero lo que cambia en cada uno es el parámetro sobre el que actúan: uno sobre el *source user* (`srcuser`) y el otro sobre *destination user* (`dstuser`).
+Estos scripts bloquean a los usuarios y matan la sesion al instante, la diferencia entre ellos es el parámetro sobre el que actúan: uno sobre el *source user* (`srcuser`) y el otro sobre *destination user* (`dstuser`).
 
   * `block_access_no_authorized.sh`
 
@@ -512,7 +512,7 @@ SecRule REQUEST_URI "@rx \.(zip|sql|bak|env|git|log)$" \
   "id:50002,phase:1,deny,status:403,log,msg:'Intento de descarga de archivo sensible'"
 ```
 **Evidencia de ejecución**<br>
-![user_agent](documents/images/3-WAF/waf-respuesta_regla_de_archivos_expuestos.png)
+![archivos](documents/images/3-WAF/waf-respuesta_regla_de_archivos_expuestos.png)
 <br>
 <br>
 **Regla 3**
@@ -523,7 +523,7 @@ SecRule REQUEST_HEADERS:Referer "!@contains 192.168.56.18" "chain,id:3005,phase:
   SecRule REQUEST_HEADERS:Referer "!@streq ''"
 ```
 **Evidencia de ejecución**<br>
-![user_agent](documents/images/3-WAF/waf-pruebas_referer.png)
+![referer](documents/images/3-WAF/waf-pruebas_referer.png)
 <br>
 
 
@@ -545,8 +545,17 @@ En la siguiente link se puenden ver evidencias de ejecución de las reglas en Wa
 
 Para la detección de actividades sospechosas de usuarios utilizamos las reglas de Wazuh 100100, 100101, 100200 y 100201 así como también utilizamos las reglas de **Auditd** para monitorear cambios en archivos del sistema que son críticos.
 
+**Ejemplos de alertas** <br>
 
+**Conexión fuera de hora/día no laboral** <br>
 
+![referer](documents/images/4-Analitica/analitica-conexiones_fines_de_semana.png)
+![referer](documents/images/4-Analitica/analitica-prueba_conexiones_fuera_de_hora.png)
+**Intentos de escalamiento de privilegios** <br>
+
+![referer](documents/images/4-Analitica/analitica-intentos_sudo.png)
+
+![referer](documents/images/4-Analitica/analitica-intentos_sudo.png)
 -----
 
 ## Solución de Acceso Administrativo - pfSense
