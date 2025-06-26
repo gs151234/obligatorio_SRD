@@ -356,12 +356,17 @@ Estos scripts son similares. Bloquean a los usuarios, pero lo que cambia en cada
 ```
 
 Se creó una *white list* para los usuarios `sysadmin`, `ansible`, `root` y posibles usuarios que necesiten conectarse en un horario no laboral como un usuario de *backup*.
+<br>
+<br>
+<br>
+**Evidencias de ejecución**<br>
+En la siguiente link se puenden ver evidencias de ejecución de las reglas. [Evidencia](documents/images/2-Wazuh)
+<br>
+<br>
+<br>
 
-En la siguiente carpeta se puenden ver evidencias de ejecución de las reglas. [Evidencia](documents/images/2-Wazuh)
 
-
-
-## Métricas (KPI)
+**Métricas (KPI)**<br>
 Se definieron tres  KPI (Key Performance Indicator, o Indicador Clave de Desempeño) para evaluar la eficacia y eficiencia de las estrategias de seguridad informática dentro de la organización, que nos permiten mantener un monitoreo constante y ayudarnos a tomar decisiones ante incidentes. 
 
 **Gráfico de alertas criticas vs alertas totales:**
@@ -393,17 +398,15 @@ Para la implementación del WAF se siguieron los siguientes pasos:
 
 [https://www.digitalocean.com/community/tutorials/how-to-set-up-mod\_security-with-apache-on-debian-ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-mod_security-with-apache-on-debian-ubuntu)
 
-![modsecurity]
-
 #### Reverse proxy
 
 [https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod\_proxy-on-debian-8](https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod_proxy-on-debian-8)
 
 
-
-Utilizamos un Web server creado para pruebas.
-
 #### Configuraciones
+
+**SecRuleEngine On**<br>
+![modsecurity](documents/images/3-WAF/waf-secruleengineon.png)
 
 #### Reverse proxy
 
@@ -474,7 +477,7 @@ SecRule REQUEST_HEADERS:Referer "!@contains 192.168.56.18" "chain,id:3005,phase:
   SecRule REQUEST_HEADERS:Referer "!@streq ''"
 ```
 
-#### Servidor WEB
+#### Utilizamos un Web server creado para pruebas. 
 
 ```xml
 <VirtualHost *:8080>
@@ -513,6 +516,18 @@ num   target        prot opt source                destination
 3     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:80
 4     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:443
 ```
+
+
+<br>
+<br>
+<br>
+**Evidencias de ejecución**<br>
+En la siguiente link se puenden ver evidencias de ejecución de las reglas. [Evidencia](documents/images/2-Wazuh)
+<br>
+<br>
+<br>
+
+
 
 -----
 
