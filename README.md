@@ -650,10 +650,10 @@ Usuario
 Para ver más configuraciones y pruebas acceder a este link [Evidencia](documents/images/5-Acceso_administrativo)
 
 <br>
+
 -----
 
 ## Bibliografía
-
 [Material consultado](documents/Bibliografía.txt)
 
 -----
