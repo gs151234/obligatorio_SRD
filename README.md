@@ -82,7 +82,7 @@ A continuación, se detalla el conjunto de requerimientos a implementar:
 ### Hardening
 
 **Aclaración:**
-Se realiza la instalación de **Debian 12 minimal** que viene con SSH server y las standard system utilities. Por este motivo no es necesario deshabilitar procesos innecesarios.
+Se realiza la instalación de **Debian 12 minimal** que viene con SSH server y las standard system utilities. Por este motivo no es necesario deshabilitar procesos innecesarios. El usuario Sysadmin es creado al momento de la instalación. Esta parte del proceso no está automatizado.  
 
 IMAGEN DE DEBIAN MINIMAL
 
