@@ -110,65 +110,6 @@ sysadmin@bastion:~/obligatorio_SRD$ tree .
 .
 ├── ansible.cfg
 ├── deploy_42.sh
-├── documents
-│   └── images
-│       ├── 1-Hardening
-│       │   ├── debian_minimal.png
-│       │   ├── hardening-auditd.png
-│       │   ├── hardening-bloqueo_roberto_sudo.png
-│       │   ├── hardening-bloqueo_roberto_sudo_wazuh.png
-│       │   ├── hardening-googleauth.png
-│       │   ├── hardening-iptables.png
-│       │   ├── hardening-modulos.png
-│       │   ├── hardening-paquetes_instalados.png
-│       │   ├── hardening-prueba_mfa.png
-│       │   ├── hardening-velociraptor_con_agentes.png
-│       │   ├── hsrdening-no_ssh_root.png
-│       │   └── hsrdening-politicas_de_contraseñas.png
-│       ├── 2-Wazuh
-│       │   ├── wazuh-general.png
-│       │   ├── wazuh-prueba_regla_100100.png
-│       │   ├── wazuh-prueba_regla_100101.png
-│       │   ├── wazuh-prueba_regla_100200.png
-│       │   ├── wazuh-prueba_regla_100201.png
-│       │   ├── wazuh-prueba_regla_100300.png
-│       │   └── wazuh-prueba_regla_100500.png
-│       ├── 3-WAF
-│       │   ├── waf-deteccion_wazuh_ataques.png
-│       │   ├── waf-pagina_de_prueba.png
-│       │   ├── waf-prueba_con_curl_como_user_agent_(actualmente_no_está_en_la_regla).png
-│       │   ├── waf-prueba_sql_injection.png
-│       │   ├── waf-pruebas_referer.png
-│       │   ├── waf-prueba_xss.png
-│       │   ├── waf-registro_en_wazuh_y_active_response_regla_100500.png
-│       │   ├── waf-reglas_iptables.png
-│       │   ├── waf-respuesta_regla_de_archivos_expuestos.png
-│       │   └── waf-secruleengineon.png
-│       ├── 4-Analitica
-│       │   ├── analitica-conexiones_fines_de_semana.png
-│       │   ├── analitica-intentos_sudo.png
-│       │   ├── analitica-intentos_su.png
-│       │   └── analitica-prueba_conexiones_fuera_de_hora.png
-│       └── 5-Acceso_administrativo
-│           ├── pfsense-admin_ovpn_ip.png
-│           ├── pfsense-alias.png
-│           ├── pfsense-cauthority.png
-│           ├── pfsense-cert_export.png
-│           ├── pfsense-certs.png
-│           ├── pfsense-client_override_admin.png
-│           ├── pfsense-client_override.png
-│           ├── pfsense-client_override_user.png
-│           ├── pfsense_-general.png
-│           ├── pfsense-paquetes_instalados_(free_radius_no_se_utilizó).png
-│           ├── pfsense-prueba_conectividad_admin.png
-│           ├── pfsense-prueba_conectividad_user.png
-│           ├── pfsense-regla_block_pfsense_en_user.png
-│           ├── pfsense-reglas_lan.png
-│           ├── pfsense-reglas_opt1.png
-│           ├── pfsense-reglas_ovpn.png
-│           ├── pfsense-reglas_wan.png
-│           ├── pfsense-servidor_vpn.png
-│           └── pfsense-user_ovpn_ip.png
 ├── inventory
 │   ├── hosts.ini
 │   └── vars
@@ -230,16 +171,24 @@ Con Sysadmin ejecutamos `"bootstrap.yml"` y preparamos el ambiente en el *host*:
 Con Ansible ejecutamos `"playhard.yml"` que contiene el rol `"hardening"` con las siguientes *"tasks"*:
 
   - Se sincronizará la hora para evitar problemas de instalación de paquetes, además de que es un requerimiento para el MFA. *- Se agregó este paso porque al utilizar máquinas clonadas que no tenían la hora actualizada o demoraba en actualizar -*
-  - Se actualizan **paquetes del sistema** (`apt update – apt upgrade`). [Evidencia](documents/images/1-Hardening/hardening-actualizaciones.png)
-  - Se instalan **paquetes necesarios** para el resto de las tareas. [Evidencia](documents/images/1-Hardening/hardening-paquetes_instalados.png)
-  - Se deshabilita el **login de *root*** por SSH. [Evidencia](documents/images/1-Hardening/hsrdening-no_ssh_root.png)
-  - Se deshabilitan **módulos de *filesystem*** innecesarios para reducir superficie de ataque. [Evidencia](documents/images/1-Hardening/hardening-modulos.png)
-  - Se aplican reglas de **Auditd** para auditar cambios en archivos del sistema que sean posible señal de actividad maliciosa. [Evidencia](documents/images/1-Hardening/hardening-auditd.png)
-  - Se configuran reglas de **iptables** para filtrar tráfico entrante y saliente. [Evidencia](documents/images/1-Hardening/hardening-iptables.png)
-  - Se aplican **políticas de contraseña** endureciendo los criterios por defecto. [Evidencia](documents/images/1-Hardening/hsrdening-politicas_de_contraseñas.png)
-  - Se configura MFA con **Google Authenticator**. Los usuarios Sysadmin, Ansible y Root no utilizan GA. [Evidencia](documents/images/1-Hardening/hardening-googleauth.png)
-  - Se instala el agente de **Wazuh** y se copian los scripts que se utilizarán para el bloqueo de usuarios. [Evidencia](documents/images/1-Hardening/hardening-paquetes_instalados.png)
-  - Se instala el agente de **Velociraptor** para recolectar datos de telemetría. El servidor *Bastion* es el que auspicia de *server* de Velociraptor. [Evidencia](documents/images/1-Hardening/hardening-velociraptor_con_agentes.png)
+ - Se actualizan **paquetes del sistema** (`apt update – apt upgrade`).  | [YML](roles/hardening/tasks/updates_upgrades.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-actualizaciones.png) | 
+
+- Se instalan **paquetes necesarios** para el resto de las tareas.  | [YML](roles/hardening/tasks/packages.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-paquetes_instalados.png) | 
+
+- Se deshabilita el **login de *root*** por SSH. |  [YML](roles/hardening/tasks/no_ssh_root.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hsrdening-no_ssh_root.png) | 
+
+- Se deshabilitan **módulos de *filesystem*** innecesarios para reducir superficie de ataque. |  [YML](roles/hardening/tasks/filesystem_modules.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-modulos.png) | 
+
+- Se aplican reglas de **Auditd** para auditar cambios en archivos del sistema que sean posible señal de actividad maliciosa.  | [YML](roles/hardening/tasks/auditd.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-auditd.png) | 
+
+- Se configuran reglas de **iptables** para filtrar tráfico entrante y saliente.  | [YML](roles/hardening/tasks/iptables.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-iptables.png) | 
+
+- Se aplican **políticas de contraseña** endureciendo los criterios por defecto.  | [YML](roles/hardening/tasks/password_policies.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hsrdening-politicas_de_contraseñas.png) | 
+
+- Se configura MFA con **Google Authenticator**. Los usuarios Sysadmin, Ansible y Root no utilizan GA.  | [YML](roles/hardening/tasks/googleauthenticator.yml) |  [Evidencia de ejecución](documents/images/1-Hardening/hardening-googleauth.png) | 
+
+- Se instala el agente de **Wazuh** y se copian los scripts que se utilizarán para el bloqueo de usuarios.  | [YML](roles/hardening/tasks/wazuh_agent.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-paquetes_instalados.png) | 
+- Se instala el agente de **Velociraptor** para recolectar datos de telemetría. El servidor *Bastion* es el que auspicia de *server* de Velociraptor.  | [YML](roles/hardening/tasks/velociraptor.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-velociraptor_con_agentes.png) | 
 
 -----
 
