@@ -231,7 +231,7 @@ Con Ansible ejecutamos `"playhard.yml"` que contiene el rol `"hardening"` con la
 
   - Se sincronizará la hora para evitar problemas de instalación de paquetes, además de que es un requerimiento para el MFA.
   - Se actualizan paquetes del sistema (`apt update – apt upgrade`). [Evidencia](documents/images/1-Hardening/hardening-paquetes_instalados.png)
-  - Se instalan paquetes necesarios para el resto de las tareas.
+  - Se instalan paquetes necesarios para el resto de las tareas. [Evidencia](documents/images/1-Hardening/hardening-paquetes_instalados.png)
   - Se deshabilita el login de *root* por SSH.
   - Se deshabilitan módulos de *filesystem* innecesarios para reducir superficie de ataque.
   - Se aplican reglas de **Auditd** para auditar cambios en archivos del sistema que sean posible señal de actividad maliciosa.
