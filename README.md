@@ -527,12 +527,12 @@ SecRule REQUEST_HEADERS:Referer "!@contains 192.168.56.18" "chain,id:3005,phase:
 <br>
 
 
+<br>
+<br>
+<br>
 
-<br>
-<br>
-<br>
 **Evidencias de ejecución** <br>
-En la siguiente link se puenden ver evidencias de ejecución de las reglas. [Evidencia](documents/images/2-Wazuh)
+En la siguiente link se puenden ver evidencias de ejecución de las reglas en Wazuh. [Evidencia](documents/images/2-Wazuh)
 <br>
 <br>
 <br>
@@ -543,9 +543,9 @@ En la siguiente link se puenden ver evidencias de ejecución de las reglas. [Evi
 
 ## Analítica de Usuarios
 
-Como se comentó en el punto de SIEM para la detección de actividades sospechosas de usuarios utilizamos las reglas de Wazuh 100100, 100101, 100200 y 100201 así como también utilizamos las reglas de **Auditd** para monitorear cambios en archivos del sistema que son críticos.
-[LINK A AUDITD]
-FOTO DE DASHBOARD
+Para la detección de actividades sospechosas de usuarios utilizamos las reglas de Wazuh 100100, 100101, 100200 y 100201 así como también utilizamos las reglas de **Auditd** para monitorear cambios en archivos del sistema que son críticos.
+
+
 
 -----
 
