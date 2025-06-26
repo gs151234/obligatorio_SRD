@@ -563,26 +563,33 @@ Para la detección de actividades sospechosas de usuarios utilizamos las reglas 
 Utilizamos **pfSense** para implementar una solución de acceso remoto mediante VPN para el acceso administrativo a la red.
 
 ![pfsense](documents/images/5-Acceso_administrativo/pfsense_-general.png)
-
-### Servidor VPN
+<br>
+<br>
+**Servidor VPN**
 <br>
 
 ![vpnserver](documents/images/5-Acceso_administrativo/pfsense-servidor_vpn.png)
-
+<br>
+<br>
+**Paquete openvpn-client-export**<br>
 Instalamos el paquete `openvpn-client-export` para la exportación de la configuración y el certificado VPN. Consideramos como MFA el uso de certificado (algo que tengo) y usuario y contraseña (algo que sé). <br>
 *Si bien figura Free Radius en este caso no es implementó. Podría tomarse como mejora a furuto* <br>
 
 ![paquetes](documents/images/5-Acceso_administrativo/pfsense-paquetes_instalados_(free_radius_no_se_utilizó).png) <br>
 <br>
+<br>
+**Client Specific Overrid**<br>
 Para mayor control y rastreo se define en la funcionalidad de *Client Specific Override* una IP fija para cada usuario.<br>
 Esto sirve tambien para disernir que usuario es administrador y cual no, ya que segun la ip que asigemos va a tener diferentes accesos. Esto lo vemos en el siguiente punto.
 
 ![override](documents/images/5-Acceso_administrativo/pfsense-client_override.png)
-
-**Ejemplo de usuario administrador**
+<br>
+Ejemplo de usuario administrador
 
 ![override_admin](documents/images/5-Acceso_administrativo/pfsense-client_override_admin.png)
-
+<br>
+<br>
+**Alias**<br>
 Utilizamos alias para abarcar todas las IP del rango de VPN para Administradores y otro alias para Usuarios:
 
   - **Administradores:** 192.168.200.2-50
@@ -593,18 +600,22 @@ Utilizamos alias para abarcar todas las IP del rango de VPN para Administradores
   - **LAN\_USUARIOS:** 192.168.20.0/24
 
 ![alias](documents/images/5-Acceso_administrativo/pfsense-alias.png)
-
+<br>
+<br>
 **Reglas** <br>
 Las reglas aplicadas permiten que los administradores tengan acceso a las LAN, mientras que los usuarios solo pueden acceder a una sola y se les bloquea también el acceso al mismo pfSense
 
-![reglas_ovpn]documents/images/5-Acceso_administrativo/pfsense-reglas_ovpn.png
+![reglas_ovpn](documents/images/5-Acceso_administrativo/pfsense-reglas_ovpn.png)
+<br>
+<br>
+
 
 
 **Evidencia de conectividad**
 
 ![conectividad_admin](documents/images/5-Acceso_administrativo/pfsense-prueba_conectividad_admin.png)
 
-![conectividad_user](documents/images/5-Acceso_administrativo/pfsense-prueba_conectividad_user.png)
+![conectividad_user](documents/images/5-Acceso_administrativo/pfsense-prueba_conectividad_user.png)<br>
 
 Para ver más configuraciones acceder a este link [paquetes](documents/images/5-Acceso_administrativo)
 
