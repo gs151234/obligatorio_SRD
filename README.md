@@ -28,7 +28,7 @@ Nosotros, Diego Vazquez Alberdi y Giovanni Storti Larrama, con documentos de ide
 * [Introducción](#introducción)
 * [Implementación](#implementación)
   * [Hardening](#hardening)
-  * [Automatismo - Ansible](#automatismo---ansible)
+  * * [Automatismo - Ansible](#automatismo-ansible)
     * [Ejecución](#ejecución)
   * [SIEM - Wazuh](#siem---wazuh)
     * [Rules](#rules)
@@ -52,7 +52,7 @@ Nosotros, Diego Vazquez Alberdi y Giovanni Storti Larrama, con documentos de ide
     * [Ejemplos de alertas](#ejemplos-de-alertas)
       * [Conexión fuera de hora/día no laboral](#conexión-fuera-de-horadía-no-laboral)
       * [Intentos de escalamiento de privilegios](#intentos-de-escalamiento-de-privilegios)
-  * [Solución de Acceso Administrativo - pfSense](#solución-de-acceso-administrativo---pfsense)
+  * [Solución de Acceso Administrativo - pfSense](#solución-de-acceso-administrativo)
     * [Servidor VPN](#servidor-vpn)
     * [Paquete openvpn-client-export](#paquete-openvpn-client-export)
     * [Client Specific Overrid](#client-specific-overrid)
@@ -128,11 +128,11 @@ Se realiza la instalación de **Debian 12 minimal** que viene con SSH server y l
 
   - Creamos claves públicas/privadas para los usuarios **Sysadmin** (con *passphrase*) que es el administrador de los sistemas y Ansible.
 
-**Automatismo - Ansible**
+## Automatismo-Ansible
 
 Utilizamos **Ansible** para la automatización desde un servidor *bastion*.
 
-  - **Estructura**
+ - **Estructura**
 ```
 sysadmin@bastion:~/obligatorio_SRD$ tree .
 .
@@ -186,7 +186,8 @@ sysadmin@bastion:~/obligatorio_SRD$ tree .
 ```
 
 
-**Ejecución**
+## Ejecución 
+<br>
 
 El automatismo parte de un script llamado `"deploy_42.sh"` que acciona 2 *playbooks* llamados `"bootstrap.yml"` y `"playhard.yml"`.
 
@@ -388,7 +389,8 @@ Se creó una *white list* para los usuarios `sysadmin`, `ansible`, `root` y posi
 <br>
 <br>
 
-**Métricas (KPI)** <br>
+## Métricas (KPI)
+<br>
 Se definieron tres  KPI (Key Performance Indicator, o Indicador Clave de Desempeño) para evaluar la eficacia y eficiencia de las estrategias de seguridad informática dentro de la organización, que nos permiten mantener un monitoreo constante y ayudarnos a tomar decisiones ante incidentes. 
 
 **Gráfico de alertas criticas vs alertas totales:**
@@ -412,7 +414,8 @@ Se definieron tres  KPI (Key Performance Indicator, o Indicador Clave de Desempe
 <br>
 
 
-**Evidencias de ejecución** <br>
+## Evidencias de ejecución
+<br>
 En la siguiente link se puenden ver evidencias de ejecución de las reglas. [Evidencia](documents/images/2-Wazuh)
 
 <br>
@@ -423,17 +426,17 @@ En la siguiente link se puenden ver evidencias de ejecución de las reglas. [Evi
 
 Para la implementación del WAF se siguieron los siguientes pasos:
 
-#### Instalación
+### Instalación
 
-**Mod security**
+#### Mod security
 
 [https://www.digitalocean.com/community/tutorials/how-to-set-up-mod\_security-with-apache-on-debian-ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-mod_security-with-apache-on-debian-ubuntu)
 
-**Reverse proxy**
+#### Reverse proxy
 
 [https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod\_proxy-on-debian-8](https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod_proxy-on-debian-8)
 
-**Web server** 
+#### Web server** 
 
 ```xml
 <VirtualHost *:8080>
@@ -476,7 +479,7 @@ num   target        prot opt source                destination
 
 #### Configuraciones WAF
 
-**SecRuleEngine On**<br>
+#### SecRuleEngine On 
 ![modsecurity](documents/images/3-WAF/waf-secruleengineon.png)
 
 #### Reverse proxy
@@ -553,7 +556,7 @@ Bloquea el acceso al sitio cuando detecta que el encabezado tiene un *referer* e
 SecRule REQUEST_HEADERS:Referer "!@contains 192.168.56.18" "chain,id:3005,phase:1,deny,status:403,log,msg:'Referer externo no autorizado (acceso por IP)'"
   SecRule REQUEST_HEADERS:Referer "!@streq ''"
 ```
-**Evidencia de ejecución**<br>
+#### Evidencia de ejecución 
 ![referer](documents/images/3-WAF/waf-pruebas_referer.png)
 <br>
 
@@ -563,13 +566,15 @@ SecRule REQUEST_HEADERS:Referer "!@contains 192.168.56.18" "chain,id:3005,phase:
 
 Para la detección de actividades sospechosas de usuarios utilizamos las reglas de Wazuh 100100, 100101, 100200 y 100201 así como también utilizamos las reglas de **Auditd** para monitorear cambios en archivos del sistema que son críticos.
 
-**Ejemplos de alertas** <br>
+#### Ejemplos de alertas
 
-**Conexión fuera de hora/día no laboral** <br>
+
+#### Conexión fuera de hora/día no laboral  
+<br>
 
 ![finsemana](documents/images/4-Analitica/analitica-conexiones_fines_de_semana.png)
-![fuerahora](documents/images/4-Analitica/analitica-prueba_conexiones_fuera_de_hora.png)
-**Intentos de escalamiento de privilegios** <br>
+![fuerahora](documents/images/4-Analitica/analitica-prueba_conexiones_fuera_de_hora.png)<br>
+#### Intentos de escalamiento de privilegios
 
 ![sudo](documents/images/4-Analitica/analitica-intentos_sudo.png)
 
@@ -583,20 +588,20 @@ Utilizamos **pfSense** para implementar una solución de acceso remoto mediante 
 ![pfsense](documents/images/5-Acceso_administrativo/pfsense_-general.png)
 <br>
 <br>
-**Servidor VPN**
+#### Servidor VPN
 <br>
 
 ![vpnserver](documents/images/5-Acceso_administrativo/pfsense-servidor_vpn.png)
 <br>
 <br>
-**Paquete openvpn-client-export**<br>
+#### Paquete openvpn-client-export
 Instalamos el paquete `openvpn-client-export` para la exportación de la configuración y el certificado VPN. Consideramos como MFA el uso de certificado (algo que tengo) y usuario y contraseña (algo que sé). <br>
 *Si bien figura Free Radius en este caso no es implementó. Podría tomarse como mejora a furuto* <br>
 
 ![paquetes](documents/images/5-Acceso_administrativo/pfsense-paquetes_instalados_(free_radius_no_se_utilizó).png) <br>
 <br>
 <br>
-**Client Specific Overrid**<br>
+#### Client Specific Overrid
 Para mayor control y rastreo se define en la funcionalidad de *Client Specific Override* una IP fija para cada usuario.<br>
 Esto sirve tambien para disernir que usuario es administrador y cual no, ya que segun la ip que asigemos va a tener diferentes accesos. Esto lo vemos en el siguiente punto.
 
@@ -607,7 +612,7 @@ Ejemplo de usuario administrador
 ![override_admin](documents/images/5-Acceso_administrativo/pfsense-client_override_admin.png)
 <br>
 <br>
-**Alias**<br>
+#### Alias 
 Utilizamos alias para abarcar todas las IP del rango de VPN para Administradores y otro alias para Usuarios:
 
   - **Administradores:** 192.168.200.2-50
@@ -620,19 +625,19 @@ Utilizamos alias para abarcar todas las IP del rango de VPN para Administradores
 ![alias](documents/images/5-Acceso_administrativo/pfsense-alias.png)
 <br>
 <br>
-**Reglas** <br>
+#### Reglas
 Las reglas aplicadas permiten que los administradores tengan acceso a las LAN, mientras que los usuarios solo pueden acceder a una sola y se les bloquea también el acceso al mismo pfSense
 
 ![reglas_ovpn](documents/images/5-Acceso_administrativo/pfsense-reglas_ovpn.png)
 <br>
 <br>
 
-**Logs de autenticación** <br>
+#### Logs de autenticación
 El registro de autenticación de los usuarios en este caso lo veremos en el **System Logs** de pfSense <br>
 ![logs](documents/images/5-Acceso_administrativo/pfsense-logs.png)
 
 
-**Evidencia de conectividad**<br>
+#### Evidencia de conectividad
 Administrador
 ![conectividad_admin](documents/images/5-Acceso_administrativo/pfsense-prueba_conectividad_admin.png)<br>
 <br>
@@ -640,7 +645,7 @@ Usuario
 ![conectividad_user](documents/images/5-Acceso_administrativo/pfsense-prueba_conectividad_user.png)<br>
 <br>
 <br>
-**Evidencias de configuración y pruebas**
+#### Evidencias de configuración y pruebas
 Para ver más configuraciones y pruebas acceder a este link [Evidencia](documents/images/5-Acceso_administrativo)
 
 <br>
