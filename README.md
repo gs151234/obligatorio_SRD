@@ -494,7 +494,7 @@ num  target     prot opt source               destination
 8    ACCEPT     6    --  0.0.0.0/0            192.168.56.20        tcp dpt:1514 ctstate NEW,ESTABLISHED
 ```
 
-#### Reglas WAF
+#### Reglas
 
 **Regla 1**
 Bloquea intentos de usuarios que quiera utilizar `wget`, `sqlmap`, `pyth`, `nmap`. Si se usa deniega el acceso (403).
@@ -529,19 +529,6 @@ SecRule REQUEST_HEADERS:Referer "!@contains 192.168.56.18" "chain,id:3005,phase:
 ![referer](documents/images/3-WAF/waf-pruebas_referer.png)
 <br>
 
-
-<br>
-<br>
-<br>
-
-**Evidencias de ejecución** <br>
-En la siguiente link se puenden ver evidencias de ejecución de las reglas en Wazuh. [Evidencia](documents/images/2-Wazuh)
-<br>
-<br>
-<br>
-
-
-
 -----
 
 ## Analítica de Usuarios
@@ -561,7 +548,7 @@ Para la detección de actividades sospechosas de usuarios utilizamos las reglas 
 ![su](documents/images/4-Analitica/analitica-intentos_sudo.png)
 -----
 
-## Solución de Acceso Administrativo - pfSense
+## Solución de Acceso Administrativo
 
 Utilizamos **pfSense** para implementar una solución de acceso remoto mediante VPN para el acceso administrativo a la red.
 
@@ -625,7 +612,8 @@ Usuario
 ![conectividad_user](documents/images/5-Acceso_administrativo/pfsense-prueba_conectividad_user.png)<br>
 <br>
 <br>
-Para ver más configuraciones acceder a este link [Evidencia](documents/images/5-Acceso_administrativo)
+**Evidencias de configuración y pruebas**
+Para ver más configuraciones y pruebas acceder a este link [Evidencia](documents/images/5-Acceso_administrativo)
 
 <br>
 -----
