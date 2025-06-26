@@ -356,17 +356,18 @@ Estos scripts son similares. Bloquean a los usuarios, pero lo que cambia en cada
 ```
 
 Se creó una *white list* para los usuarios `sysadmin`, `ansible`, `root` y posibles usuarios que necesiten conectarse en un horario no laboral como un usuario de *backup*.
+
 <br>
 <br>
-<br>
-**Evidencias de ejecución**<br>
+
+**Evidencias de ejecución** <br>
 En la siguiente link se puenden ver evidencias de ejecución de las reglas. [Evidencia](documents/images/2-Wazuh)
 <br>
 <br>
-<br>
 
 
-**Métricas (KPI)**<br>
+
+**Métricas (KPI)** <br>
 Se definieron tres  KPI (Key Performance Indicator, o Indicador Clave de Desempeño) para evaluar la eficacia y eficiencia de las estrategias de seguridad informática dentro de la organización, que nos permiten mantener un monitoreo constante y ayudarnos a tomar decisiones ante incidentes. 
 
 **Gráfico de alertas criticas vs alertas totales:**
@@ -402,8 +403,47 @@ Para la implementación del WAF se siguieron los siguientes pasos:
 
 [https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod\_proxy-on-debian-8](https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod_proxy-on-debian-8)
 
+#### Utilizamos un Web server creado para pruebas. 
 
-#### Configuraciones
+```xml
+<VirtualHost *:8080>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+
+Se deja escuchando solo el puerto 8080:<br>
+`/etc/apache2/ports.conf`
+
+```bash
+#Listen 80
+Listen 8080
+```
+
+#### Reglas de Firewall Web server
+
+```bash
+Chain INPUT (policy DROP)
+num   target        prot opt source                destination
+1     ACCEPT        0    --  0.0.0.0/0             0.0.0.0/0             ctstate RELATED,ESTABLISHED
+2     ACCEPT        6    --  192.168.56.0/24       0.0.0.0/0             tcp dpt:22 ctstate NEW
+3     ACCEPT        6    --  192.168.56.18         0.0.0.0/0             tcp dpt:8080 ctstate NEW
+
+Chain FORWARD (policy DROP)
+num   target        prot opt source                destination
+
+Chain OUTPUT (policy ACCEPT)
+num   target        prot opt source                destination
+1     ACCEPT        17   --  0.0.0.0/0             0.0.0.0/0             udp dpt:53
+2     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:53
+3     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:80
+4     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:443
+```
+<br>
+#### Configuraciones WAF
 
 **SecRuleEngine On**<br>
 ![modsecurity](documents/images/3-WAF/waf-secruleengineon.png)
@@ -460,7 +500,10 @@ Bloquea intentos de usuarios que quiera utilizar `wget`, `sqlmap`, `pyth`, `nmap
 SecRule REQUEST_HEADERS:User-Agent "@rx (?i)(wget|sqlmap|python|nmap)" \
   "id:50001,phase:1,deny,status:403,log,msg:'Bloqueo de User-Agent sospechoso'"
 ```
-
+**Evidencia de ejecución**<br>
+![user_agent](documents/images/3-WAF/waf-prueba_user_agent.png)
+<br>
+<br>
 **Regla 2**
 Bloquea URLs que intentan acceder a archivos sensibles con extensiones `.zip`, `.sql`, `.bak`, `.env`, `.git`, `.log`. Si se detecta deniega el acceso (403).
 
@@ -468,7 +511,10 @@ Bloquea URLs que intentan acceder a archivos sensibles con extensiones `.zip`, `
 SecRule REQUEST_URI "@rx \.(zip|sql|bak|env|git|log)$" \
   "id:50002,phase:1,deny,status:403,log,msg:'Intento de descarga de archivo sensible'"
 ```
-
+**Evidencia de ejecución**<br>
+![user_agent](documents/images/3-WAF/waf-respuesta_regla_de_archivos_expuestos.png)
+<br>
+<br>
 **Regla 3**
 Bloquea el acceso al sitio cuando detecta que el encabezado tiene un *referer* externo que no coincide con el dominio de nuestra página web.
 
@@ -476,52 +522,16 @@ Bloquea el acceso al sitio cuando detecta que el encabezado tiene un *referer* e
 SecRule REQUEST_HEADERS:Referer "!@contains 192.168.56.18" "chain,id:3005,phase:1,deny,status:403,log,msg:'Referer externo no autorizado (acceso por IP)'"
   SecRule REQUEST_HEADERS:Referer "!@streq ''"
 ```
+**Evidencia de ejecución**<br>
+![user_agent](documents/images/3-WAF/waf-pruebas_referer.png)
+<br>
 
-#### Utilizamos un Web server creado para pruebas. 
-
-```xml
-<VirtualHost *:8080>
-        ServerAdmin webmaster@localhost
-        DocumentRoot /var/www/html
-
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
-```
-
-Se deja escuchando solo el puerto 8080:
-`/etc/apache2/ports.conf`
-
-```bash
-#Listen 80
-Listen 8080
-```
-
-#### Reglas de Firewall
-
-```bash
-Chain INPUT (policy DROP)
-num   target        prot opt source                destination
-1     ACCEPT        0    --  0.0.0.0/0             0.0.0.0/0             ctstate RELATED,ESTABLISHED
-2     ACCEPT        6    --  192.168.56.0/24       0.0.0.0/0             tcp dpt:22 ctstate NEW
-3     ACCEPT        6    --  192.168.56.18         0.0.0.0/0             tcp dpt:8080 ctstate NEW
-
-Chain FORWARD (policy DROP)
-num   target        prot opt source                destination
-
-Chain OUTPUT (policy ACCEPT)
-num   target        prot opt source                destination
-1     ACCEPT        17   --  0.0.0.0/0             0.0.0.0/0             udp dpt:53
-2     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:53
-3     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:80
-4     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:443
-```
 
 
 <br>
 <br>
 <br>
-**Evidencias de ejecución**<br>
+**Evidencias de ejecución** <br>
 En la siguiente link se puenden ver evidencias de ejecución de las reglas. [Evidencia](documents/images/2-Wazuh)
 <br>
 <br>
