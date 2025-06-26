@@ -104,7 +104,7 @@ Se realiza la instalación de **Debian 12 minimal** que viene con SSH server y l
 
 Utilizamos **Ansible** para la automatización desde un servidor *bastion*.
 
-  - **Estructura:**
+  - **Estructura**
 ```
 sysadmin@bastion:~/obligatorio_SRD$ tree .
 .
@@ -158,7 +158,7 @@ sysadmin@bastion:~/obligatorio_SRD$ tree .
 ```
 
 
-**Ejecución:**
+**Ejecución**
 
 El automatismo parte de un script llamado `"deploy_42.sh"` que acciona 2 *playbooks* llamados `"bootstrap.yml"` y `"playhard.yml"`.
 
@@ -395,15 +395,17 @@ Se definieron tres  KPI (Key Performance Indicator, o Indicador Clave de Desempe
 
 Para la implementación del WAF se siguieron los siguientes pasos:
 
-#### Mod security
+#### Instalación
+
+**Mod security**
 
 [https://www.digitalocean.com/community/tutorials/how-to-set-up-mod\_security-with-apache-on-debian-ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-mod_security-with-apache-on-debian-ubuntu)
 
-#### Reverse proxy
+**Reverse proxy**
 
 [https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod\_proxy-on-debian-8](https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod_proxy-on-debian-8)
 
-#### Utilizamos un Web server creado para pruebas. 
+**Web server** 
 
 ```xml
 <VirtualHost *:8080>
@@ -443,6 +445,7 @@ num   target        prot opt source                destination
 4     ACCEPT        6    --  0.0.0.0/0             0.0.0.0/0             tcp dpt:443
 ```
 <br>
+
 #### Configuraciones WAF
 
 **SecRuleEngine On**<br>
