@@ -60,7 +60,7 @@ Nosotros, Diego Vazquez Alberdi y Giovanni Storti Larrama, con documentos de ide
     * [Logs de autenticación](#logs-de-autenticación)
     * [Evidencia de conectividad](#evidencia-de-conectividad)
     * [Evidencias de configuración y pruebas](#evidencias-de-configuración-y-pruebas)
-  * [Bibliografía](#bibliografia)
+   * [Bibliografía](#bibliografia)
 
 -----
 
