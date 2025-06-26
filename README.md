@@ -24,7 +24,6 @@ Nosotros, Diego Vazquez Alberdi y Giovanni Storti Larrama, con documentos de ide
 -----
 
 ## Índice
-
 * [Introducción](#introducción)
 * [Implementación](#implementación)
   * [Hardening](#hardening)
@@ -241,8 +240,6 @@ Con Ansible ejecutamos `"playhard.yml"` que contiene el rol `"hardening"` con la
 **Evidencia de ejecución:** <br>
  ![Evidencia de ejecución](documents/images/1-Hardening/hardening-velociraptor_con_agentes.png)
 <br>
-
-[Volver al índice](#indice)
 
 -----
 
