@@ -549,13 +549,13 @@ Para la detección de actividades sospechosas de usuarios utilizamos las reglas 
 
 **Conexión fuera de hora/día no laboral** <br>
 
-![referer](documents/images/4-Analitica/analitica-conexiones_fines_de_semana.png)
-![referer](documents/images/4-Analitica/analitica-prueba_conexiones_fuera_de_hora.png)
+![finsemana](documents/images/4-Analitica/analitica-conexiones_fines_de_semana.png)
+![fuerahora](documents/images/4-Analitica/analitica-prueba_conexiones_fuera_de_hora.png)
 **Intentos de escalamiento de privilegios** <br>
 
-![referer](documents/images/4-Analitica/analitica-intentos_sudo.png)
+![sudo](documents/images/4-Analitica/analitica-intentos_sudo.png)
 
-![referer](documents/images/4-Analitica/analitica-intentos_sudo.png)
+![su](documents/images/4-Analitica/analitica-intentos_sudo.png)
 -----
 
 ## Solución de Acceso Administrativo - pfSense
