@@ -617,6 +617,6 @@ Las reglas aplicadas permiten que los administradores tengan acceso a las LAN, m
 
 ![conectividad_user](documents/images/5-Acceso_administrativo/pfsense-prueba_conectividad_user.png)<br>
 
-Para ver más configuraciones acceder a este link [paquetes](documents/images/5-Acceso_administrativo)
+Para ver más configuraciones acceder a este link [Evidencia](documents/images/5-Acceso_administrativo)
 
 -----
