@@ -175,7 +175,7 @@ Con Ansible ejecutamos `"playhard.yml"` que contiene el rol `"hardening"` con la
 
 - Se instalan **paquetes necesarios** para el resto de las tareas.  | [YML](roles/hardening/tasks/packages.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-paquetes_instalados.png) | 
 
-- Se deshabilita el **login de *root*** por SSH. |  [YML](roles/hardening/tasks/no_ssh_root.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hsrdening-no_ssh_root.png) | 
+- Se deshabilita el **login de *root*** por SSH. |  [YML](roles/hardening/tasks/no_ssh_root.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-no_ssh_root.png) | 
 
 - Se deshabilitan **módulos de *filesystem*** innecesarios para reducir superficie de ataque. |  [YML](roles/hardening/tasks/filesystem_modules.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-modulos.png) | 
 
@@ -183,7 +183,7 @@ Con Ansible ejecutamos `"playhard.yml"` que contiene el rol `"hardening"` con la
 
 - Se configuran reglas de **iptables** para filtrar tráfico entrante y saliente.  | [YML](roles/hardening/tasks/iptables.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-iptables.png) | 
 
-- Se aplican **políticas de contraseña** endureciendo los criterios por defecto.  | [YML](roles/hardening/tasks/password_policies.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hsrdening-politicas_de_contraseñas.png) | 
+- Se aplican **políticas de contraseña** endureciendo los criterios por defecto.  | [YML](roles/hardening/tasks/password_policies.yml) | [Evidencia de ejecución](documents/images/1-Hardening/hardening-politicas_de_contraseñas.png) | 
 
 - Se configura MFA con **Google Authenticator**. Los usuarios Sysadmin, Ansible y Root no utilizan GA.  | [YML](roles/hardening/tasks/googleauthenticator.yml) |  [Evidencia de ejecución](documents/images/1-Hardening/hardening-googleauth.png) | 
 
