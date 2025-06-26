@@ -96,18 +96,126 @@ A continuación, se detalla el conjunto de requerimientos a implementar:
 **Aclaración:**
 Se realiza la instalación de **Debian 12 minimal** que viene con SSH server y las standard system utilities. Por este motivo no es necesario deshabilitar procesos innecesarios. El usuario Sysadmin es creado al momento de la instalación. Esta parte del proceso no está automatizado.  
 
-IMAGEN DE DEBIAN MINIMAL
+![Debian 12 minimal](documents/images/1-Hardening/debian_minimal.png)
 
-Por este motivo no es necesario deshabilitar procesos innecesarios.
+  - Creamos claves públicas/privadas para los usuarios **Sysadmin** (con *passphrase*) que es el administrador de los sistemas y Ansible.
 
 **Automatismo - Ansible**
 
 Utilizamos **Ansible** para la automatización desde un servidor *bastion*.
 
   - **Estructura:**
-    IMAGEN DE TREE ANSIBLE
+```
+sysadmin@bastion:~/obligatorio_SRD$ tree .
+.
+├── ansible.cfg
+├── deploy_42.sh
+├── documents
+│   └── images
+│       ├── 1-Hardening
+│       │   ├── debian_minimal.png
+│       │   ├── hardening-auditd.png
+│       │   ├── hardening-bloqueo_roberto_sudo.png
+│       │   ├── hardening-bloqueo_roberto_sudo_wazuh.png
+│       │   ├── hardening-googleauth.png
+│       │   ├── hardening-iptables.png
+│       │   ├── hardening-modulos.png
+│       │   ├── hardening-paquetes_instalados.png
+│       │   ├── hardening-prueba_mfa.png
+│       │   ├── hardening-velociraptor_con_agentes.png
+│       │   ├── hsrdening-no_ssh_root.png
+│       │   └── hsrdening-politicas_de_contraseñas.png
+│       ├── 2-Wazuh
+│       │   ├── wazuh-general.png
+│       │   ├── wazuh-prueba_regla_100100.png
+│       │   ├── wazuh-prueba_regla_100101.png
+│       │   ├── wazuh-prueba_regla_100200.png
+│       │   ├── wazuh-prueba_regla_100201.png
+│       │   ├── wazuh-prueba_regla_100300.png
+│       │   └── wazuh-prueba_regla_100500.png
+│       ├── 3-WAF
+│       │   ├── waf-deteccion_wazuh_ataques.png
+│       │   ├── waf-pagina_de_prueba.png
+│       │   ├── waf-prueba_con_curl_como_user_agent_(actualmente_no_está_en_la_regla).png
+│       │   ├── waf-prueba_sql_injection.png
+│       │   ├── waf-pruebas_referer.png
+│       │   ├── waf-prueba_xss.png
+│       │   ├── waf-registro_en_wazuh_y_active_response_regla_100500.png
+│       │   ├── waf-reglas_iptables.png
+│       │   ├── waf-respuesta_regla_de_archivos_expuestos.png
+│       │   └── waf-secruleengineon.png
+│       ├── 4-Analitica
+│       │   ├── analitica-conexiones_fines_de_semana.png
+│       │   ├── analitica-intentos_sudo.png
+│       │   ├── analitica-intentos_su.png
+│       │   └── analitica-prueba_conexiones_fuera_de_hora.png
+│       └── 5-Acceso_administrativo
+│           ├── pfsense-admin_ovpn_ip.png
+│           ├── pfsense-alias.png
+│           ├── pfsense-cauthority.png
+│           ├── pfsense-cert_export.png
+│           ├── pfsense-certs.png
+│           ├── pfsense-client_override_admin.png
+│           ├── pfsense-client_override.png
+│           ├── pfsense-client_override_user.png
+│           ├── pfsense_-general.png
+│           ├── pfsense-paquetes_instalados_(free_radius_no_se_utilizó).png
+│           ├── pfsense-prueba_conectividad_admin.png
+│           ├── pfsense-prueba_conectividad_user.png
+│           ├── pfsense-regla_block_pfsense_en_user.png
+│           ├── pfsense-reglas_lan.png
+│           ├── pfsense-reglas_opt1.png
+│           ├── pfsense-reglas_ovpn.png
+│           ├── pfsense-reglas_wan.png
+│           ├── pfsense-servidor_vpn.png
+│           └── pfsense-user_ovpn_ip.png
+├── inventory
+│   ├── hosts.ini
+│   └── vars
+│       └── linux_vars.yml
+├── playbooks
+│   ├── bootstrap.yml
+│   └── playhard.yml
+├── README.md
+└── roles
+    └── hardening
+        ├── files
+        │   └── wazuh_scripts
+        │       ├── block_access_no_authorized.sh
+        │       ├── block_sudo_su_no_authorized.sh
+        │       └── white_users.list
+        ├── handlers
+        │   └── main.yml
+        ├── tasks
+        │   ├── auditd.yml
+        │   ├── filesystem_modules.yml
+        │   ├── googleauthenticator.yml
+        │   ├── iptables.yml
+        │   ├── main.yml
+        │   ├── no_ssh_root.yml
+        │   ├── packages.yml
+        │   ├── password_policies.yml
+        │   ├── time_sync.yml
+        │   ├── updates_upgrades.yml
+        │   ├── velociraptor.yml
+        │   └── wazuh_agent.yml
+        └── templates
+            ├── auditd_rules
+            │   ├── access.rules.j2
+            │   ├── actions.rules.j2
+            │   ├── delete.rules.j2
+            │   ├── logins.rules.j2
+            │   ├── MAC-policy.rules.j2
+            │   ├── modules.rules.j2
+            │   ├── mounts.rules.j2
+            │   ├── perm_mod.rules.j2
+            │   ├── privilege_persistence.rules.j2
+            │   ├── session.rules.j2
+            │   └── system_locale.rules.j2
+            └── sshd.pam.j2
 
-  - Creamos claves públicas/privadas para los usuarios **Sysadmin** (con *passphrase*) que es el administrador de los sistemas y Ansible.
+```
+
 
 **Ejecución:**
 
@@ -122,7 +230,7 @@ Con Sysadmin ejecutamos `"bootstrap.yml"` y preparamos el ambiente en el *host*:
 Con Ansible ejecutamos `"playhard.yml"` que contiene el rol `"hardening"` con las siguientes *"tasks"*:
 
   - Se sincronizará la hora para evitar problemas de instalación de paquetes, además de que es un requerimiento para el MFA.
-  - Se actualizan paquetes del sistema (`apt update – apt upgrade`).
+  - Se actualizan paquetes del sistema (`apt update – apt upgrade`). [Evidencia](documents/images/1-Hardening/hardening-paquetes_instalados.png)
   - Se instalan paquetes necesarios para el resto de las tareas.
   - Se deshabilita el login de *root* por SSH.
   - Se deshabilitan módulos de *filesystem* innecesarios para reducir superficie de ataque.
