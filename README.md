@@ -229,17 +229,17 @@ Con Sysadmin ejecutamos `"bootstrap.yml"` y preparamos el ambiente en el *host*:
 
 Con Ansible ejecutamos `"playhard.yml"` que contiene el rol `"hardening"` con las siguientes *"tasks"*:
 
-  - Se sincronizará la hora para evitar problemas de instalación de paquetes, además de que es un requerimiento para el MFA.
-  - Se actualizan paquetes del sistema (`apt update – apt upgrade`). [Evidencia](documents/images/1-Hardening/hardening-paquetes_instalados.png)
-  - Se instalan paquetes necesarios para el resto de las tareas. [Evidencia](documents/images/1-Hardening/hardening-paquetes_instalados.png)
-  - Se deshabilita el login de *root* por SSH.
-  - Se deshabilitan módulos de *filesystem* innecesarios para reducir superficie de ataque.
-  - Se aplican reglas de **Auditd** para auditar cambios en archivos del sistema que sean posible señal de actividad maliciosa.
-  - Se configuran reglas de **iptables** para filtrar tráfico entrante y saliente.
-  - Se aplican políticas de contraseña endureciendo los criterios por defecto.
-  - Se configura MFA con **Google Authenticator**. Los usuarios Sysadmin, Ansible y Root no utilizan GA.
-  - Se instala el agente de **Wazuh** y se copian los scripts que se utilizarán para el bloqueo de usuarios.
-  - Se instala el agente de **Velociraptor** para recolectar datos de telemetría. El servidor *Bastion* es el que auspicia de *server* de Velociraptor.
+  - Se sincronizará la hora para evitar problemas de instalación de paquetes, además de que es un requerimiento para el MFA. *- Se agregó este paso porque al utilizar máquinas clonadas que no tenían la hora actualizada o demoraba en actualizar -*
+  - Se actualizan **paquetes del sistema** (`apt update – apt upgrade`). [Evidencia](documents/images/1-Hardening/hardening-actualizaciones.png)
+  - Se instalan **paquetes necesarios** para el resto de las tareas. [Evidencia](documents/images/1-Hardening/hardening-paquetes_instalados.png)
+  - Se deshabilita el **login de *root*** por SSH. [Evidencia](documents/images/1-Hardening/hsrdening-no_ssh_root.png)
+  - Se deshabilitan **módulos de *filesystem*** innecesarios para reducir superficie de ataque. [Evidencia](documents/images/1-Hardening/hardening-modulos.png)
+  - Se aplican reglas de **Auditd** para auditar cambios en archivos del sistema que sean posible señal de actividad maliciosa. [Evidencia](documents/images/1-Hardening/hardening-auditd.png)
+  - Se configuran reglas de **iptables** para filtrar tráfico entrante y saliente. [Evidencia](documents/images/1-Hardening/hardening-iptables.png)
+  - Se aplican **políticas de contraseña** endureciendo los criterios por defecto. [Evidencia](documents/images/1-Hardening/hsrdening-politicas_de_contraseñas.png)
+  - Se configura MFA con **Google Authenticator**. Los usuarios Sysadmin, Ansible y Root no utilizan GA. [Evidencia](documents/images/1-Hardening/hardening-googleauth.png)
+  - Se instala el agente de **Wazuh** y se copian los scripts que se utilizarán para el bloqueo de usuarios. [Evidencia](documents/images/1-Hardening/hardening-paquetes_instalados.png)
+  - Se instala el agente de **Velociraptor** para recolectar datos de telemetría. El servidor *Bastion* es el que auspicia de *server* de Velociraptor. [Evidencia](documents/images/1-Hardening/hardening-velociraptor_con_agentes.png)
 
 -----
 
