@@ -197,6 +197,8 @@ Con Ansible ejecutamos `"playhard.yml"` que contiene el rol `"hardening"` con la
 Para la implementación de Wazuh utilizamos el OVA disponible en la página oficial:
 [https://packages.wazuh.com/4.x/vm/wazuh-4.12.0.ova](https://packages.wazuh.com/4.x/vm/wazuh-4.12.0.ova)
 
+![Wazuh](documents/images/2-Wazuh/wazuh-general.png)
+
 #### Rules
 
 **Reglas 100100 y 100101**
@@ -296,7 +298,7 @@ Utilizamos un script de Wazuh llamado `firewall-drops` y creamos 2 scripts para 
 
 ```
 
-Estos scripts son similares, pero lo que cambia es el parámetro sobre el que actúan: uno sobre el *source user* (`srcuser`) y el otro sobre *destination user* (`dstuser`).
+Estos scripts son similares. Bloquean a los usuarios, pero lo que cambia en cada uno es el parámetro sobre el que actúan: uno sobre el *source user* (`srcuser`) y el otro sobre *destination user* (`dstuser`).
 
   * `block_access_no_authorized.sh`
 
@@ -332,6 +334,10 @@ Estos scripts son similares, pero lo que cambia es el parámetro sobre el que ac
 ```
 
 Se creó una *white list* para los usuarios `sysadmin`, `ansible`, `root` y posibles usuarios que necesiten conectarse en un horario no laboral como un usuario de *backup*.
+
+En la siguiente carpeta se puenden ver evidencias de ejecución de las reglas en Wazu [Evidencia](documents/images/2-Wazuh)
+
+
 
 ## Métricas (KPI)
 se definieron tres  KPI (Key Performance Indicator, o Indicador Clave de Desempeño) para evaluar la eficacia y eficiencia de las estrategias de seguridad informática dentro de una organización que nos permiten mantener un monitoreo constante y ayudarnos a tomar decisiones ante incidentes. 
